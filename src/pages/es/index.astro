@@ -1,0 +1,115 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Badge from "../../components/Badge.astro";
+import SocialPill from "../../components/SocialPill.astro";
+import LinkedInIcon from "../../components/icons/LinkedIn.astro";
+import GithubIcon from "../../components/icons/Github.astro";
+import GmailIcon from "../../components/icons/Gmail.astro";
+import SectionContainer from "../../components/SectionContainer.astro";
+import Experiencie from "../../components/Experiencie.astro";
+import WorkIcon from "../../components/icons/Work.astro";
+import CodeIcon from "../../components/icons/Code.astro";
+import Projects from "../../components/Projects.astro";
+import PaperIcon from "../../components/icons/Paper.astro";
+import About from "../../components/About.astro";
+import PersonIcon from "../../components/icons/Person.astro";
+import { getLangFromUrl, useTranslations } from "../../i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<Layout title="Portfolio de Guido Juliano Web Developer">
+  <main class="px-4">
+    <div class="flex items-center justify-center h-screen">
+      <SectionContainer>
+        <h1
+          class="text-3xl font-bold text-purple-200 flex flex-row gap-x-4 pb-10 md:text-5xl"
+        >
+          {t("home.title")}
+          <a
+            href="https://www.linkedin.com/in/guidojuliano/"
+            target="_blank"
+            rel="noopener"
+            class="flex justify-center items-center"
+          >
+            <Badge class="bg-green-300 text-green-800">Open to work</Badge>
+          </a>
+        </h1>
+
+        <h2 class="text-xl opacity-80 text-wrap md:text-2xl">
+          <span class="font-semibold text-yellow-200/90">{t("home.work")}</span>
+
+          <br />
+          <span class="text-blue-200/90">{t("home.description")}</span>
+        </h2>
+
+        <ul class="flex gap-4 py-2 flex-wrap">
+          <li>
+            <SocialPill
+              href="https://www.linkedin.com/in/guidojuliano/"
+              class="text-purple-200/90"
+            >
+              <LinkedInIcon class="size-4 md:size-6" />
+              LinkedIn
+            </SocialPill>
+          </li>
+          <li>
+            <SocialPill
+              href="https://github.com/guidojuliano"
+              class="text-purple-200/90"
+            >
+              <GithubIcon class="size-4 md:size-6" />
+              Github
+            </SocialPill>
+          </li>
+          <li>
+            <SocialPill
+              href="mailto:guidojulianou@gmail.com"
+              class="text-purple-200/90"
+            >
+              <GmailIcon class="size-4 md:size-6" />
+              guidojulianou@gmail.com
+            </SocialPill>
+          </li>
+          <li>
+            <SocialPill
+              href="https://drive.google.com/file/d/1MxGwxgqmHy92ccYH-MguiIo7n6gMCraf/view?usp=sharing"
+              class="text-purple-200/90"
+            >
+              <PaperIcon class="size-4 md:size-6" />
+              Curriculum
+            </SocialPill>
+          </li>
+        </ul>
+      </SectionContainer>
+    </div>
+    <SectionContainer id="about" class="md:pt-80 pt-40">
+      <h2
+        class="text-4xl text-purple-200 font-semibold mb-8 flex gap-x-3 items-center"
+      >
+        <PersonIcon class="size-8" />
+        {t("about.title")}
+      </h2>
+      <About />
+    </SectionContainer>
+    <SectionContainer id="experience" class="md:pt-80 pt-40">
+      <h2
+        class="text-4xl text-purple-200 font-semibold mb-8 flex gap-x-3 items-center"
+      >
+        <WorkIcon class="size-8" />
+        {t("experience.title")}
+      </h2>
+      <Experiencie />
+    </SectionContainer>
+    <SectionContainer id="projects" class="md:pt-60 pt-40">
+      <h2
+        class="text-4xl text-purple-200 font-semibold mb-6 flex gap-x-3 items-center"
+      >
+        <CodeIcon class="size-8" />
+        {t("projects.title")}
+      </h2>
+      <Projects />
+    </SectionContainer>
+  </main>
+</Layout>

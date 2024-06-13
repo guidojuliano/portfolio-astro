@@ -1,0 +1,15 @@
+---
+import { languages } from "../i18n/ui";
+---
+
+<ul>
+  {
+    Object.entries(languages).map(([lang, label]) => (
+      <li>
+        <a href={`/${lang}/`} class="hover:underline text-white/80">
+          {label}{" "}
+        </a>
+      </li>
+    ))
+  }
+</ul>

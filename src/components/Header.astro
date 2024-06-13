@@ -1,0 +1,128 @@
+---
+import { getLangFromUrl, useTranslations } from "../i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<nav
+  class="bg-custom-purple/10 backdrop-blur-xl dark:bg-gray-900 fixed w-full z-20 top-0 start-0 border-gray-200 dark:border-gray-600"
+>
+  <div
+    class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4"
+  >
+    <img
+      class="rounded-full size-12 shadow-sm shadow-white/10"
+      src="https://media.licdn.com/dms/image/D4D03AQGvRzzumsId4w/profile-displayphoto-shrink_800_800/0/1716214894775?e=1722470400&v=beta&t=d8F4sakSTqYw1VXvz2MMNVGkxmHroKv6VuDhPGdaq2s"
+      alt="foto perfil"
+    />
+
+    <div class="md:hidden space-x-3 md:space-x-0 rtl:space-x-reverse">
+      <button
+        id="menu-toggle"
+        data-collapse-toggle="menu-list"
+        type="button"
+        class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+        aria-controls="menu-list"
+        aria-expanded="false"
+      >
+        <span class="sr-only">Open main menu</span>
+        <svg
+          class="w-5 h-5"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 17 14"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M1 1h15M1 7h15M1 13h15"></path>
+        </svg>
+      </button>
+    </div>
+    <div
+      class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
+      id="menu-list"
+    >
+      <ul
+        class="flex flex-col p-4 md:p-0 mt-4 font-medium border rounded-lg md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700"
+      >
+        <li>
+          <a
+            href="#"
+            class="block py-2 px-3 text-white rounded hover:bg-gray-100/20 md:hover:bg-transparent md:hover:text-yellow-200 md:p-0 md:dark:hover:text-yellow-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+            aria-current="page">{t("nav.home")}</a
+          >
+        </li>
+        <li>
+          <a
+            href="#about"
+            class="block py-2 px-3 text-white rounded hover:bg-gray-100/20 md:hover:bg-transparent md:hover:text-yellow-200 md:p-0 md:dark:hover:text-yellow-500 dark:text-white dark:hover:bg-gray-200 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-200"
+            >{t("nav.about")}</a
+          >
+        </li>
+        <li>
+          <a
+            href="#experience"
+            class="block py-2 px-3 text-white rounded hover:bg-gray-100/20 md:hover:bg-transparent md:hover:text-yellow-200 md:p-0 md:dark:hover:text-yellow-500 dark:text-white dark:hover:bg-gray-200 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-200"
+            >{t("nav.experience")}</a
+          >
+        </li>
+        <li>
+          <a
+            href="#projects"
+            class="block py-2 px-3 text-white rounded hover:bg-gray-100/20 md:hover:bg-transparent md:hover:text-yellow-200 md:p-0 md:dark:hover:text-yellow-500 dark:text-white dark:hover:bg-gray-200 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-200"
+            >{t("nav.projects")}</a
+          >
+        </li>
+        <li>
+          <button
+            data-modal-target="popup-modal"
+            data-modal-toggle="popup-modal"
+            class="cursor-pointer block py-2 px-3 text-white rounded hover:bg-gray-100/20 md:hover:bg-transparent md:hover:text-yellow-200 md:p-0 md:dark:hover:text-yellow-500 dark:text-white dark:hover:bg-gray-200 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-200"
+            type="button">{t("nav.contact")}</button
+          >
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<script>
+  document
+    .getElementById("menu-toggle")
+    ?.addEventListener("click", function () {
+      var menu = document.getElementById("menu-list");
+      menu?.classList.toggle("hidden");
+    });
+
+  // Open the modal
+  document.querySelectorAll("[data-modal-toggle]").forEach((button) => {
+    button.addEventListener("click", function () {
+      const modalId: string | null = button.getAttribute("data-modal-toggle");
+      if (modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+          modal.classList.remove("hidden");
+          modal.classList.add("flex");
+        }
+      }
+    });
+  });
+
+  // Close the modal
+  document.querySelectorAll("[data-modal-hide]").forEach((button) => {
+    button.addEventListener("click", function () {
+      const modalId: string | null = button.getAttribute("data-modal-hide");
+      if (modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+          modal.classList.add("hidden");
+        }
+      }
+    });
+  });
+</script>
