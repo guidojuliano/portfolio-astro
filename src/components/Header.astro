@@ -1,6 +1,7 @@
 ---
 import { getLangFromUrl, useTranslations } from "../i18n/utils";
-
+import { Image } from "astro:assets";
+import profileImage from "../media/images/profile.jpg";
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 ---
@@ -11,9 +12,9 @@ const t = useTranslations(lang);
   <div
     class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4"
   >
-    <img
+    <Image
       class="rounded-full size-12 shadow-sm shadow-white/10"
-      src="https://media.licdn.com/dms/image/D4D03AQGvRzzumsId4w/profile-displayphoto-shrink_800_800/0/1716214894775?e=1722470400&v=beta&t=d8F4sakSTqYw1VXvz2MMNVGkxmHroKv6VuDhPGdaq2s"
+      src={profileImage}
       alt="foto perfil"
     />
 
