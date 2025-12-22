@@ -4,7 +4,8 @@ import Badge from "./Badge.astro";
 import GithubIcon from "./icons/Github.astro";
 import quixImage from "../media/images/quix.jpg";
 import arkanoidImage from "../media/images/arkanoid.jpg";
-import artworksImage from "../media/images/artworks.jpg";
+import restauranteImage from "../media/images/restaurante.png";
+import guidopaloozaImage from "../media/images/guidopalooza.png";
 import { getLangFromUrl, useTranslations } from "../i18n/utils";
 
 const lang = getLangFromUrl(Astro.url);
@@ -36,12 +37,20 @@ const PROJECTS = [
     tags: ["JavaScript", "CSS", "HTML"],
   },
   {
-    title: "Artworks",
+    title: "Pizzeria Ubaldi",
     description: t("projects.description3"),
-    link: "https://artworksguido.vercel.app/",
-    github: "https://github.com/guidojuliano/spa-artworks-nbch",
-    image: artworksImage,
-    tags: ["JavaScript", "CSS", "HTML", "ReactJS", "MaterialUI"],
+    link: "https://restaurante-landing-three.vercel.app/",
+    github: "https://github.com/guidojuliano/restaurante-landing",
+    image: restauranteImage,
+    tags: ["JavaScript", "Astro", "HTML", "TailwindCSS"],
+  },
+  {
+    title: t("projects.project4"),
+    description: t("projects.description4"),
+    link: "https://guidopalooza.vercel.app/",
+    github: "https://github.com/guidojuliano/guidopalooza",
+    image: guidopaloozaImage,
+    tags: ["Next.js", "Motion", "Shadcn", "TypeScript"],
   },
 ];
 ---

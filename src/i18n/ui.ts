@@ -18,11 +18,11 @@ export const ui = {
       "Specialized in creating high-quality web applications.",
     "about.title": "About Me",
     "about.description1":
-      "I'm a web developer with a passion for creating beautiful and functional websites. I am studying Systems Engineering and pursuing various courses and certifications.",
+      "I'm Guido Juliano, a web developer passionate about creating engaging and functional digital experiences. I’m currently studying Engineering and a Technical Degree in Systems, and I enjoy continuous learning — exploring new technologies and finding ways to improve my projects.",
     "about.description2":
-      "I am a continuously learning professional who adapts quickly to new work environments. I enjoy working in teams and possess effective communication skills.",
+      "I love working in teams, sharing ideas, and paying attention to every detail in my work.",
     "about.description3":
-      "I am seeking opportunities to join an IT team in a company where I can develop professionally and contribute my skills.",
+      "In this space, you’ll find some of the projects that best represent me — where I combine design, code, and creativity to bring real ideas to life.",
     "experience.title": "Work Experience",
     "experience.job": "Frontend Developer",
     "experience.company": "Nuevo Banco del Chaco S.A.",
@@ -40,9 +40,12 @@ export const ui = {
       "Ecomerse website built with NextJS where I implemented data fetching and data mutation with GraphQL, cookie management, middleware implementation for routes control, AI implementation to create a chat-bot, SEO, performance analysis and more",
     "projects.project2": "Arkanoid",
     "projects.description2": "Classic arcade game built with JavaScript",
-    "projects.project3": "Artworks",
+    "projects.project3": "Pizzeria Ubaldi",
     "projects.description3":
-      "List of artworks fetched from an API displayed in a paginated table using Material-UI components",
+      "Landing page of a pizza store made with Astro with responsive design and an elegant style",
+    "projects.project4": "Guidopalooza",
+    "projects.description4":
+      "Event landing page for Guidopalooza with horizontal scroll and parallax effect",
     "projects.button": "View on Github",
   },
   es: {
@@ -57,11 +60,11 @@ export const ui = {
       "Especializado en la creación de sitios web de alta calidad.",
     "about.title": "Sobre mi",
     "about.description1":
-      "Soy un desarrollador web con pasión por crear sitios web atractivos y funcionales. Estudio Ingeniería en Sistemas y estoy realizando diferentes cursos y certificaciones.",
+      "Soy Guido Juliano, desarrollador web con pasión por crear experiencias digitales atractivas y funcionales. Estudio Ingeniería y Tecnicatura en Sistemas, y me gusta mantenerme en constante aprendizaje, explorando nuevas tecnologías y formas de mejorar mis proyectos.",
     "about.description2":
-      "Soy un profesional en constante aprendizaje que se adapta rápidamente a nuevos entornos de trabajo. Disfruto trabajar en equipo y poseo habilidades de comunicación efectivas.",
+      "Disfruto trabajar en equipo, compartir ideas y cuidar los detalles en cada desarrollo.",
     "about.description3":
-      "Busco oportunidades para unirme a un equipo de TI en una empresa donde pueda desarrollarme profesionalmente y aportar mis habilidades.",
+      "En este espacio vas a encontrar algunos de los trabajos que más me representan: proyectos donde combino diseño, código y creatividad para dar vida a ideas reales.",
     "experience.title": "Experiencia Laboral",
     "experience.job": "Desarrollador Frontend",
     "experience.company": "Nuevo Banco del Chaco S.A.",
@@ -80,9 +83,12 @@ export const ui = {
     "projects.project2": "Arkanoid",
     "projects.description2":
       "Juego clasico de arcade implementado con JavaScript",
-    "projects.project3": "Artworks",
+    "projects.project3": "Pizzeria Ubaldi",
     "projects.description3":
-      "Lista de obras de arte obtenidas de una API mostrada en una tabla paginada usando componentes Material-UI",
+      "Landing page de una pizzería realizada con Astro con diseño responsivo y un estilo elegante",
+    "projects.project4": "Guidopalooza",
+    "projects.description4":
+      "Landing page del evento Guidopalooza con scroll horizontal y efecto parallax",
     "projects.button": "Ver en Github",
   },
 } as const;
