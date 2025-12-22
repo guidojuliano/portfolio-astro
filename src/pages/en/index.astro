@@ -10,7 +10,6 @@ import Experiencie from "../../components/Experiencie.astro";
 import WorkIcon from "../../components/icons/Work.astro";
 import CodeIcon from "../../components/icons/Code.astro";
 import Projects from "../../components/Projects.astro";
-import PaperIcon from "../../components/icons/Paper.astro";
 import About from "../../components/About.astro";
 import PersonIcon from "../../components/icons/Person.astro";
 import { getLangFromUrl, useTranslations } from "../../i18n/utils";
@@ -44,6 +43,23 @@ const t = useTranslations(lang);
           <span class="text-blue-200/90">{t("home.description")}</span>
         </h2>
 
+        <div class="mt-6 flex flex-wrap gap-3">
+          <a
+            href="#projects"
+            class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-yellow-200/20 px-5 py-2 text-sm font-semibold text-yellow-100 hover:bg-yellow-200/30 hover:scale-105 transition"
+          >
+            {t("home.ctaProjects")}
+          </a>
+          <a
+            href="https://drive.google.com/file/d/16nwyR_zQqNFh6wT_wLJeYQDj0zIp2fYL/view?usp=sharing"
+            target="_blank"
+            rel="noopener"
+            class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-2 text-sm font-semibold text-white/90 hover:bg-white/10 hover:scale-105 transition"
+          >
+            {t("home.ctaCv")}
+          </a>
+        </div>
+
         <ul class="flex gap-4 py-2 flex-wrap">
           <li>
             <SocialPill
@@ -70,15 +86,6 @@ const t = useTranslations(lang);
             >
               <GmailIcon class="size-4 md:size-6" />
               guidojulianou@gmail.com
-            </SocialPill>
-          </li>
-          <li>
-            <SocialPill
-              href="https://drive.google.com/file/d/16nwyR_zQqNFh6wT_wLJeYQDj0zIp2fYL/view?usp=sharing"
-              class="text-purple-200/90"
-            >
-              <PaperIcon class="size-4 md:size-6" />
-              Resumee
             </SocialPill>
           </li>
         </ul>

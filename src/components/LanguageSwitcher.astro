@@ -1,0 +1,29 @@
+---
+import { languages } from "../i18n/ui";
+import { getLangFromUrl } from "../i18n/utils";
+import LanguageIcon from "./icons/Language.astro";
+
+const lang = getLangFromUrl(Astro.url);
+const languageKeys = Object.keys(languages);
+const currentLang = (languageKeys.includes(lang) ? lang : "es") as keyof typeof languages;
+const otherLang = Object.entries(languages).find(([code]) => code !== currentLang);
+---
+
+<div
+  class="flex items-center gap-2 py-2 px-3 text-white rounded hover:bg-gray-100/20 md:hover:bg-transparent md:hover:text-yellow-200 md:p-0 md:dark:hover:text-yellow-500 dark:text-white dark:hover:bg-gray-200 dark:hover:text-white md:dark:hover:bg-transparent"
+>
+  <LanguageIcon class="size-4 md:size-5 text-white/80" aria-hidden="true" />
+  <span class="text-white/90">{languages[currentLang]}</span>
+  {otherLang && (
+    <>
+      <span class="text-white/40">/</span>
+      <a
+        href={`/${otherLang[0]}/`}
+        class="text-yellow-200 hover:underline"
+        aria-label={`Switch language to ${otherLang[1]}`}
+      >
+        {otherLang[1]}
+      </a>
+    </>
+  )}
+</div>

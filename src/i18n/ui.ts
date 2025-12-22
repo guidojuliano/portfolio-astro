@@ -1,6 +1,6 @@
 export const languages = {
-  en: "English",
-  es: "Español",
+  en: "EN",
+  es: "ES",
 };
 
 export const defaultLang = "es";
@@ -16,6 +16,8 @@ export const ui = {
     "home.work": "Web Developer.",
     "home.description":
       "Specialized in creating high-quality web applications.",
+    "home.ctaProjects": "View projects",
+    "home.ctaCv": "Download resume",
     "about.title": "About Me",
     "about.description1":
       "I'm Guido Juliano, a web developer passionate about creating engaging and functional digital experiences. I’m currently studying Engineering and a Technical Degree in Systems, and I enjoy continuous learning — exploring new technologies and finding ways to improve my projects.",
@@ -58,6 +60,8 @@ export const ui = {
     "home.work": "Desarrollador web.",
     "home.description":
       "Especializado en la creación de sitios web de alta calidad.",
+    "home.ctaProjects": "Ver proyectos",
+    "home.ctaCv": "Descargar CV",
     "about.title": "Sobre mi",
     "about.description1":
       "Soy Guido Juliano, desarrollador web con pasión por crear experiencias digitales atractivas y funcionales. Estudio Ingeniería y Tecnicatura en Sistemas, y me gusta mantenerme en constante aprendizaje, explorando nuevas tecnologías y formas de mejorar mis proyectos.",
