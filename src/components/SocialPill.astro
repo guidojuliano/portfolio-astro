@@ -3,7 +3,7 @@ const { class: className, href } = Astro.props;
 ---
 
 <a
-  class=`text-xs md:text-base rounded-full border border-white/10 flex justify-center items-center gap-x-2 py-3 px-3 bg-white/5 hover:scale-110 transition hover:bg-white/10 z-50 cursor-pointer ${className}`
+  class=`text-xs md:text-base rounded-full border border-white/10 inline-flex justify-center items-center gap-x-2 py-2.5 px-3 bg-white/5 hover:scale-105 transition hover:bg-white/10 z-50 cursor-pointer min-h-11 ${className}`
   href={href}
   target="_blank"
   rel="noopener"

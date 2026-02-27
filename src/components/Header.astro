@@ -5,6 +5,21 @@ import profileImage from "../media/images/profile.jpg";
 import LanguageSwitcher from "./LanguageSwitcher.astro";
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
+const pathname = Astro.url.pathname;
+const isServicesPage = pathname.endsWith("/services");
+
+const homeBase =
+  lang === "en" ? "/en/" : pathname.startsWith("/es") ? "/es/" : "/";
+
+const homeHref = homeBase;
+const getSectionHref = (sectionId: string) =>
+  isServicesPage ? `${homeBase}#${sectionId}` : `#${sectionId}`;
+const servicesHref =
+  lang === "en"
+    ? "/en/services"
+    : pathname.startsWith("/es")
+      ? "/es/services"
+      : "/services";
 ---
 
 <nav
@@ -13,11 +28,13 @@ const t = useTranslations(lang);
   <div
     class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4"
   >
-    <Image
-      class="rounded-full size-12 shadow-sm shadow-white/10"
-      src={profileImage}
-      alt="foto perfil"
-    />
+    <a href={homeBase} aria-label="Go to home" class="inline-flex">
+      <Image
+        class="rounded-full size-12 shadow-sm shadow-white/10 transition-transform hover:scale-105"
+        src={profileImage}
+        alt="foto perfil"
+      />
+    </a>
 
     <div class="md:hidden space-x-3 md:space-x-0 rtl:space-x-reverse">
       <button
@@ -50,32 +67,39 @@ const t = useTranslations(lang);
       id="menu-list"
     >
       <ul
-        class="flex flex-col p-4 md:p-0 mt-4 font-medium border rounded-lg md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700"
+        class="flex flex-col p-4 md:p-0 mt-4 font-medium border rounded-lg md:items-center md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700"
       >
         <li>
           <a
-            href="#"
+            href={homeHref}
             class="block py-2 px-3 text-white rounded hover:bg-gray-100/20 md:hover:bg-transparent md:hover:text-yellow-200 md:p-0 md:dark:hover:text-yellow-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
             aria-current="page">{t("nav.home")}</a
           >
         </li>
         <li>
           <a
-            href="#about"
+            href={getSectionHref("about")}
             class="block py-2 px-3 text-white rounded hover:bg-gray-100/20 md:hover:bg-transparent md:hover:text-yellow-200 md:p-0 md:dark:hover:text-yellow-500 dark:text-white dark:hover:bg-gray-200 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-200"
             >{t("nav.about")}</a
           >
         </li>
         <li>
           <a
-            href="#experience"
+            href={getSectionHref("experience")}
             class="block py-2 px-3 text-white rounded hover:bg-gray-100/20 md:hover:bg-transparent md:hover:text-yellow-200 md:p-0 md:dark:hover:text-yellow-500 dark:text-white dark:hover:bg-gray-200 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-200"
             >{t("nav.experience")}</a
           >
         </li>
         <li>
           <a
-            href="#projects"
+            href={getSectionHref("tech")}
+            class="block py-2 px-3 text-white rounded hover:bg-gray-100/20 md:hover:bg-transparent md:hover:text-yellow-200 md:p-0 md:dark:hover:text-yellow-500 dark:text-white dark:hover:bg-gray-200 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-200"
+            >{t("nav.tech")}</a
+          >
+        </li>
+        <li>
+          <a
+            href={getSectionHref("projects")}
             class="block py-2 px-3 text-white rounded hover:bg-gray-100/20 md:hover:bg-transparent md:hover:text-yellow-200 md:p-0 md:dark:hover:text-yellow-500 dark:text-white dark:hover:bg-gray-200 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-200"
             >{t("nav.projects")}</a
           >
@@ -86,6 +110,13 @@ const t = useTranslations(lang);
             data-modal-toggle="popup-modal"
             class="cursor-pointer block py-2 px-3 text-white rounded hover:bg-gray-100/20 md:hover:bg-transparent md:hover:text-yellow-200 md:p-0 md:dark:hover:text-yellow-500 dark:text-white dark:hover:bg-gray-200 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-200"
             type="button">{t("nav.contact")}</button
+          >
+        </li>
+        <li>
+          <a
+            href={servicesHref}
+            class="inline-flex items-center justify-center py-2 px-3 text-yellow-100 rounded-lg bg-yellow-200/20 border border-yellow-200/40 hover:bg-yellow-200/30 md:px-4 md:py-1.5 md:leading-5 md:rounded-full md:hover:text-yellow-50 md:hover:bg-yellow-200/35 transition"
+            >{t("nav.services")}</a
           >
         </li>
         <li>
@@ -103,31 +134,4 @@ const t = useTranslations(lang);
       var menu = document.getElementById("menu-list");
       menu?.classList.toggle("hidden");
     });
-
-  // Open the modal
-  document.querySelectorAll("[data-modal-toggle]").forEach((button) => {
-    button.addEventListener("click", function () {
-      const modalId: string | null = button.getAttribute("data-modal-toggle");
-      if (modalId) {
-        const modal = document.getElementById(modalId);
-        if (modal) {
-          modal.classList.remove("hidden");
-          modal.classList.add("flex");
-        }
-      }
-    });
-  });
-
-  // Close the modal
-  document.querySelectorAll("[data-modal-hide]").forEach((button) => {
-    button.addEventListener("click", function () {
-      const modalId: string | null = button.getAttribute("data-modal-hide");
-      if (modalId) {
-        const modal = document.getElementById(modalId);
-        if (modal) {
-          modal.classList.add("hidden");
-        }
-      }
-    });
-  });
 </script>

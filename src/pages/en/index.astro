@@ -1,17 +1,20 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import Badge from "../../components/Badge.astro";
 import SocialPill from "../../components/SocialPill.astro";
+import HeroTitle from "../../components/HeroTitle.astro";
 import LinkedInIcon from "../../components/icons/LinkedIn.astro";
 import GithubIcon from "../../components/icons/Github.astro";
 import GmailIcon from "../../components/icons/Gmail.astro";
 import SectionContainer from "../../components/SectionContainer.astro";
 import Experiencie from "../../components/Experiencie.astro";
-import WorkIcon from "../../components/icons/Work.astro";
-import CodeIcon from "../../components/icons/Code.astro";
+import WorkAnimatedIcon from "../../components/icons/WorkAnimated.astro";
+import TechAnimatedIcon from "../../components/icons/TechAnimated.astro";
+import ProjectsAnimatedIcon from "../../components/icons/ProjectsAnimated.astro";
 import Projects from "../../components/Projects.astro";
 import About from "../../components/About.astro";
-import PersonIcon from "../../components/icons/Person.astro";
+import AboutTypingIcon from "../../components/icons/AboutTyping.astro";
+import TechStack from "../../components/TechStack.astro";
+import FeaturedProject from "../../components/FeaturedProject.astro";
 import { getLangFromUrl, useTranslations } from "../../i18n/utils";
 
 const lang = getLangFromUrl(Astro.url);
@@ -23,9 +26,9 @@ const t = useTranslations(lang);
     <div class="flex items-center justify-center h-screen">
       <SectionContainer>
         <h1
-          class="text-3xl font-bold text-purple-200 flex flex-row gap-x-4 pb-10 md:text-5xl"
+          class="text-3xl font-bold text-purple-200 flex flex-row justify-center md:justify-start gap-x-4 pb-8 md:pb-10 text-center md:text-left md:text-5xl"
         >
-          {t("home.title")}
+          <HeroTitle text={t("home.title")} />
           <!-- <a
             href="https://www.linkedin.com/in/guidojuliano/"
             target="_blank"
@@ -36,14 +39,14 @@ const t = useTranslations(lang);
           </a> -->
         </h1>
 
-        <h2 class="text-xl opacity-80 text-wrap md:text-2xl">
+        <h2 class="text-lg opacity-80 text-wrap text-center md:text-left md:text-2xl">
           <span class="font-semibold text-yellow-200/90">{t("home.work")}</span>
 
           <br />
           <span class="text-blue-200/90">{t("home.description")}</span>
         </h2>
 
-        <div class="mt-6 flex flex-wrap gap-3">
+        <div class="mt-6 flex flex-wrap gap-3 justify-center md:justify-start">
           <a
             href="#projects"
             class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-yellow-200/20 px-5 py-2 text-sm font-semibold text-yellow-100 hover:bg-yellow-200/30 hover:scale-105 transition"
@@ -60,32 +63,32 @@ const t = useTranslations(lang);
           </a>
         </div>
 
-        <ul class="flex gap-4 py-2 flex-wrap">
+        <ul class="flex gap-3 py-3 flex-wrap justify-center md:justify-start">
           <li>
             <SocialPill
               href="https://www.linkedin.com/in/guidojuliano/"
-              class="text-purple-200/90"
+              class="text-purple-200/90 p-0 w-12 h-12 md:w-auto md:h-auto md:px-3 md:py-2.5"
             >
-              <LinkedInIcon class="size-4 md:size-6" />
-              LinkedIn
+              <LinkedInIcon class="size-5 md:size-6" />
+              <span class="hidden md:inline">LinkedIn</span>
             </SocialPill>
           </li>
           <li>
             <SocialPill
               href="https://github.com/guidojuliano"
-              class="text-purple-200/90"
+              class="text-purple-200/90 p-0 w-12 h-12 md:w-auto md:h-auto md:px-3 md:py-2.5"
             >
-              <GithubIcon class="size-4 md:size-6" />
-              Github
+              <GithubIcon class="size-5 md:size-6" />
+              <span class="hidden md:inline">Github</span>
             </SocialPill>
           </li>
           <li>
             <SocialPill
               href="mailto:guidojulianou@gmail.com"
-              class="text-purple-200/90"
+              class="text-purple-200/90 p-0 w-12 h-12 md:w-auto md:h-auto md:px-3 md:py-2.5"
             >
-              <GmailIcon class="size-4 md:size-6" />
-              guidojulianou@gmail.com
+              <GmailIcon class="size-5 md:size-6" />
+              <span class="hidden md:inline">guidojulianou@gmail.com</span>
             </SocialPill>
           </li>
         </ul>
@@ -95,7 +98,7 @@ const t = useTranslations(lang);
       <h2
         class="text-4xl text-purple-200 font-semibold mb-8 flex gap-x-3 items-center"
       >
-        <PersonIcon class="size-8" />
+        <AboutTypingIcon class="size-11 md:size-12" />
         {t("about.title")}
       </h2>
       <About />
@@ -104,19 +107,33 @@ const t = useTranslations(lang);
       <h2
         class="text-4xl text-purple-200 font-semibold mb-8 flex gap-x-3 items-center"
       >
-        <WorkIcon class="size-8" />
+        <WorkAnimatedIcon class="size-11 md:size-12" />
         {t("experience.title")}
       </h2>
       <Experiencie />
     </SectionContainer>
-    <SectionContainer id="projects" class="md:pt-60 pt-40">
+    <SectionContainer id="tech" class="md:pt-60 pt-40">
       <h2
         class="text-4xl text-purple-200 font-semibold mb-6 flex gap-x-3 items-center"
       >
-        <CodeIcon class="size-8" />
+        <TechAnimatedIcon class="size-11 md:size-12" />
+        {t("tech.title")}
+      </h2>
+      <TechStack />
+    </SectionContainer>
+    <SectionContainer id="projects" class="md:pt-48 pt-32">
+      <h2
+        class="text-4xl text-purple-200 font-semibold mb-6 flex gap-x-3 items-center"
+      >
+        <ProjectsAnimatedIcon class="size-11 md:size-12" />
         {t("projects.title")}
       </h2>
       <Projects />
+      <h3 class="text-2xl text-purple-200/90 font-semibold mt-12 mb-5 flex gap-x-2 items-center">
+        <ProjectsAnimatedIcon class="size-8" />
+        {t("featured.title")}
+      </h3>
+      <FeaturedProject />
     </SectionContainer>
   </main>
 </Layout>

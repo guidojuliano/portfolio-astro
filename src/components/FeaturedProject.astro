@@ -1,0 +1,74 @@
+---
+import { Image } from "astro:assets";
+import cooklyImage from "../media/images/cookly.png";
+import TechBadge from "./TechBadge.astro";
+import FirebaseIcon from "./icons/Firebase.astro";
+import { getLangFromUrl, useTranslations } from "../i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const featuredStack = ["Flutter", "Supabase", "Node.js", "Fastify", "Firebase", "Figma"];
+const TECH_ICON_MAP: Record<string, { icon?: string; useReactIcon?: boolean }> = {
+  Flutter: { icon: "https://svgl.app/library/flutter.svg" },
+  Supabase: { icon: "https://svgl.app/library/supabase.svg" },
+  "Node.js": { icon: "https://svgl.app/library/nodejs.svg" },
+  Fastify: { icon: "https://svgl.app/library/fastify_dark.svg" },
+  Firebase: { icon: "local-firebase" },
+  Figma: { icon: "https://svgl.app/library/figma.svg" },
+};
+---
+
+<article class="rounded-2xl border border-white/10 bg-white/5 p-6">
+  <h3 class="text-2xl font-semibold text-yellow-200/90 mb-2">{t("featured.projectTitle")}</h3>
+  <p class="text-fuchsia-200 mb-5">{t("featured.summary")}</p>
+
+  <div class="grid gap-5 md:grid-cols-3">
+    <div class="rounded-xl border border-white/10 bg-black/20 p-4">
+      <h4 class="text-sm uppercase tracking-wide text-cyan-200 mb-2">{t("featured.problemTitle")}</h4>
+      <p class="text-sm text-white/80">{t("featured.problem")}</p>
+    </div>
+    <div class="rounded-xl border border-white/10 bg-black/20 p-4">
+      <h4 class="text-sm uppercase tracking-wide text-cyan-200 mb-2">{t("featured.solutionTitle")}</h4>
+      <p class="text-sm text-white/80">{t("featured.solution")}</p>
+    </div>
+    <div class="rounded-xl border border-white/10 bg-black/20 p-4">
+      <h4 class="text-sm uppercase tracking-wide text-cyan-200 mb-2">{t("featured.impactTitle")}</h4>
+      <p class="text-sm text-white/80">{t("featured.impact")}</p>
+    </div>
+  </div>
+
+  <a href="https://github.com/guidojuliano/cookly_app" target="_blank" rel="noopener">
+    <Image class="my-6 rounded-xl shadow-xl shadow-black/25" src={cooklyImage} alt="Cookly app screenshot" />
+  </a>
+
+  <ul class="flex py-2 mb-4 flex-wrap gap-1">
+    {featuredStack.map((tag) => (
+      <li>
+        {tag === "Firebase" ? (
+          <span class="inline-flex items-center gap-2 rounded-md border border-white/20 bg-white/10 backdrop-blur-sm px-2.5 py-1 text-xs font-semibold text-blue-100 shadow-sm shadow-black/10">
+            <span class="flex h-5 w-5 items-center justify-center rounded bg-black/35 border border-white/10">
+              <FirebaseIcon class="h-3.5 w-3.5" />
+            </span>
+            {tag}
+          </span>
+        ) : (
+          <TechBadge
+            label={tag}
+            icon={TECH_ICON_MAP[tag]?.icon}
+            useReactIcon={Boolean(TECH_ICON_MAP[tag]?.useReactIcon)}
+          />
+        )}
+      </li>
+    ))}
+  </ul>
+
+  <a
+    href="https://github.com/guidojuliano/cookly_app"
+    target="_blank"
+    rel="noopener"
+    class="inline-flex items-center rounded-full border border-white/15 bg-yellow-200/20 px-5 py-2 text-sm font-semibold text-yellow-100 hover:bg-yellow-200/30 transition"
+  >
+    {t("featured.ctaCode")}
+  </a>
+</article>

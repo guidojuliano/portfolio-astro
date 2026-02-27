@@ -1,6 +1,6 @@
 ---
 import { Image } from "astro:assets";
-import Badge from "./Badge.astro";
+import TechBadge from "./TechBadge.astro";
 import GithubIcon from "./icons/Github.astro";
 import quixImage from "../media/images/quix.jpg";
 import arkanoidImage from "../media/images/arkanoid.jpg";
@@ -53,6 +53,29 @@ const PROJECTS = [
     tags: ["Next.js", "Motion", "Shadcn", "TypeScript"],
   },
 ];
+
+const TECH_ICON_MAP: Record<string, { icon?: string; useReactIcon?: boolean }> = {
+  TypeScript: { icon: "https://svgl.app/library/typescript.svg" },
+  Sass: { icon: "https://svgl.app/library/sass.svg" },
+  "Next.js": { icon: "https://svgl.app/library/nextjs_icon_dark.svg" },
+  Shopify: { icon: "https://svgl.app/library/shopify.svg" },
+  Figma: { icon: "https://svgl.app/library/figma.svg" },
+  Postman: { icon: "https://svgl.app/library/postman.svg" },
+  GraphQL: { icon: "https://svgl.app/library/graphql.svg" },
+  JavaScript: { icon: "https://svgl.app/library/javascript.svg" },
+  CSS: { icon: "https://svgl.app/library/css_old.svg" },
+  HTML: { icon: "https://svgl.app/library/html5.svg" },
+  Astro: { icon: "https://svgl.app/library/astro-icon-dark.svg" },
+  TailwindCSS: { icon: "https://svgl.app/library/tailwindcss.svg" },
+  Motion: { icon: "https://svgl.app/library/framer_motion.svg" },
+  Shadcn: { icon: "https://svgl.app/library/shadcn-ui_dark.svg" },
+  React: { useReactIcon: true },
+  "React Native": { useReactIcon: true },
+  Flutter: { icon: "https://svgl.app/library/flutter.svg" },
+  Supabase: { icon: "https://svgl.app/library/supabase.svg" },
+  "Node.js": { icon: "https://svgl.app/library/nodejs.svg" },
+  Fastify: { icon: "https://svgl.app/library/fastify_dark.svg" },
+};
 ---
 
 {
@@ -71,7 +94,11 @@ const PROJECTS = [
       <ul class="flex py-2 flex-wrap gap-1">
         {project.tags.map((tag) => (
           <li>
-            <Badge class="bg-blue-200/90 text-purple-900">{tag}</Badge>
+            <TechBadge
+              label={tag}
+              icon={TECH_ICON_MAP[tag]?.icon}
+              useReactIcon={Boolean(TECH_ICON_MAP[tag]?.useReactIcon)}
+            />
           </li>
         ))}
       </ul>

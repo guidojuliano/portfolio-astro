@@ -1,0 +1,31 @@
+---
+import Layout from "../layouts/Layout.astro";
+import ServicesGrid from "../components/ServicesGrid.astro";
+import SectionContainer from "../components/SectionContainer.astro";
+import FinalCta from "../components/FinalCta.astro";
+import { getLangFromUrl, useTranslations } from "../i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<Layout title="Services - Guido Juliano Web & Mobile Developer" backgroundVariant="services">
+  <main class="px-4">
+    <SectionContainer id="services" class="pt-40">
+      <h1
+        class="text-4xl text-purple-200 font-semibold mb-6 flex gap-x-3 items-center md:text-5xl"
+      >
+        {t("services.title")}
+      </h1>
+      <p class="text-xl text-blue-200/90 mb-10 max-w-[700px]">
+        {t("services.description")}
+      </p>
+      
+      <ServicesGrid />
+      
+      <div class="mt-16">
+        <FinalCta />
+      </div>
+    </SectionContainer>
+  </main>
+</Layout>

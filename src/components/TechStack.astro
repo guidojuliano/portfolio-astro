@@ -1,0 +1,127 @@
+---
+import { getLangFromUrl, useTranslations } from "../i18n/utils";
+import ReactIcon from "./icons/React.astro";
+import ClaudeCodeIcon from "./icons/ClaudeCode.astro";
+import CodexIcon from "./icons/Codex.astro";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const stack = [
+  {
+    name: "TypeScript",
+    icon: "https://svgl.app/library/typescript.svg",
+  },
+  {
+    name: "React",
+    icon: "",
+    useLocalIcon: true,
+  },
+  {
+    name: "React Native",
+    icon: "",
+    useLocalIcon: true,
+  },
+  {
+    name: "Next.js",
+    icon: "https://svgl.app/library/nextjs_icon_dark.svg",
+  },
+  {
+    name: "Astro",
+    icon: "https://svgl.app/library/astro-icon-dark.svg",
+  },
+  {
+    name: "Flutter",
+    icon: "https://svgl.app/library/flutter.svg",
+  },
+  {
+    name: "Figma",
+    icon: "https://svgl.app/library/figma.svg",
+  },
+  {
+    name: "Node.js",
+    icon: "https://svgl.app/library/nodejs.svg",
+  },
+  {
+    name: "Fastify",
+    icon: "https://svgl.app/library/fastify_dark.svg",
+  },
+  {
+    name: "Python",
+    icon: "https://svgl.app/library/python.svg",
+  },
+  {
+    name: "Django",
+    icon: "https://svgl.app/library/django.svg",
+  },
+  {
+    name: "PostgreSQL",
+    icon: "https://svgl.app/library/postgresql.svg",
+  },
+  {
+    name: "Supabase",
+    icon: "https://svgl.app/library/supabase.svg",
+  },
+  {
+    name: "GraphQL",
+    icon: "https://svgl.app/library/graphql.svg",
+  },
+  {
+    name: "Claude Code",
+    icon: "",
+    useClaudeIcon: true,
+  },
+  {
+    name: "Codex",
+    icon: "",
+    useCodexIcon: true,
+  },
+];
+---
+
+<div class="rounded-2xl border border-white/10 bg-purple-200/5 p-6">
+  <p class="text-blue-200/90 mb-6 max-w-2xl">{t("tech.description")}</p>
+
+  <ul class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+    {
+      stack.map((tech) => (
+        <li
+          class="rounded-xl border border-white/10 bg-white/5 p-3 transition hover:bg-white/10 hover:border-white/20"
+        >
+          <div class="flex items-center gap-3">
+            <div class="flex h-10 w-10 items-center justify-center rounded-lg border border-white/10 bg-neutral-900/60">
+              {tech.useLocalIcon ? (
+                <ReactIcon class="h-6 w-6" />
+              ) : tech.useClaudeIcon ? (
+                <ClaudeCodeIcon class="h-6 w-6" />
+              ) : tech.useCodexIcon ? (
+                <CodexIcon class="h-6 w-6 rounded" />
+              ) : !tech.icon ? (
+                <span
+                  class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-white/10 text-[10px] font-semibold text-white/80"
+                >
+                  {tech.name.slice(0, 2).toUpperCase()}
+                </span>
+              ) : (
+                <img
+                  src={tech.icon}
+                  alt={`${tech.name} logo`}
+                  class="h-6 w-6 object-contain"
+                  loading="lazy"
+                  decoding="async"
+                  onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-flex';"
+                />
+              )}
+              <span
+                class="hidden h-6 w-6 items-center justify-center rounded-full bg-white/10 text-[10px] font-semibold text-white/80"
+              >
+                {tech.name.slice(0, 2).toUpperCase()}
+              </span>
+            </div>
+            <span class="text-sm font-medium text-white/90">{tech.name}</span>
+          </div>
+        </li>
+      ))
+    }
+  </ul>
+</div>

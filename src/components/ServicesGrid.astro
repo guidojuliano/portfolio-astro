@@ -1,0 +1,96 @@
+---
+import { getLangFromUrl, useTranslations } from "../i18n/utils";
+import CodeIcon from "./icons/Code.astro";
+import MobileIcon from "./icons/Mobile.astro";
+import LandingIcon from "./icons/Landing.astro";
+import DesignIcon from "./icons/Design.astro";
+import MaintenanceIcon from "./icons/Maintenance.astro";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const SERVICES = [
+  {
+    title: t("services.web.title"),
+    description: t("services.web.desc"),
+    icon: CodeIcon,
+    color: "text-blue-100 border-blue-400/30",
+    glow: "from-blue-400/20 to-cyan-400/10",
+  },
+  {
+    title: t("services.mobile.title"),
+    description: t("services.mobile.desc"),
+    icon: MobileIcon,
+    color: "text-indigo-100 border-indigo-400/30",
+    glow: "from-indigo-400/20 to-violet-400/10",
+  },
+  {
+    title: t("services.landing.title"),
+    description: t("services.landing.desc"),
+    icon: LandingIcon,
+    color: "text-emerald-100 border-emerald-400/30",
+    glow: "from-emerald-400/20 to-lime-300/10",
+  },
+  {
+    title: t("services.design.title"),
+    description: t("services.design.desc"),
+    icon: DesignIcon,
+    color: "text-fuchsia-100 border-fuchsia-400/30",
+    glow: "from-fuchsia-400/20 to-pink-400/10",
+  },
+  {
+    title: t("services.maintenance.title"),
+    description: t("services.maintenance.desc"),
+    icon: MaintenanceIcon,
+    color: "text-teal-100 border-teal-400/30",
+    glow: "from-teal-400/20 to-green-400/10",
+  },
+];
+---
+
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 py-10">
+  {
+    SERVICES.map((service, index) => (
+      <article
+        class={`service-card group relative overflow-hidden rounded-2xl border bg-white/[0.03] p-6 backdrop-blur-sm transition-transform duration-500 hover:-translate-y-1.5 ${service.color}`}
+        style={`animation-delay:${index * 90}ms;`}
+      >
+        <div class={`pointer-events-none absolute inset-0 bg-gradient-to-br ${service.glow} opacity-70 transition-opacity duration-500 group-hover:opacity-100`}></div>
+        <div class="relative z-10 mb-5 inline-flex p-3 rounded-xl bg-white/5 border border-white/15 transition-all duration-500 group-hover:scale-105 group-hover:rotate-3">
+          <service.icon class="size-6" />
+        </div>
+        <h3 class="relative z-10 font-semibold mb-3 text-white text-xl md:text-2xl leading-tight">
+          {service.title}
+        </h3>
+        <p class="relative z-10 text-white/75 leading-relaxed text-sm md:text-base">
+          {service.description}
+        </p>
+      </article>
+    ))
+  }
+</div>
+
+<style>
+  .service-card {
+    animation: card-in 620ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  @keyframes card-in {
+    from {
+      opacity: 0;
+      transform: translateY(14px) scale(0.985);
+      filter: blur(2px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      filter: blur(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .service-card {
+      animation: none;
+    }
+  }
+</style>

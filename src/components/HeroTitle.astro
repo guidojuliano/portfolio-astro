@@ -1,0 +1,70 @@
+---
+interface Props {
+  text: string;
+}
+
+const { text } = Astro.props as Props;
+const name = "Guido Juliano";
+const [before = text, after = ""] = text.split(name);
+---
+
+<span class="hero-title">
+  {before}
+  {text.includes(name) ? <span class="hero-name">{name}</span> : null}
+  {after}
+</span>
+
+<style>
+  .hero-title {
+    display: inline-block;
+  }
+
+  .hero-name {
+    position: relative;
+    display: inline-block;
+    margin-left: 0.25rem;
+    background: linear-gradient(90deg, #fde68a, #bfdbfe, #f9a8d4, #fde68a);
+    background-size: 220% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: hero-shift 6s linear infinite, hero-bob 2.8s ease-in-out infinite;
+  }
+
+  .hero-name::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -0.3rem;
+    height: 2px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, rgba(253,230,138,.9), rgba(191,219,254,.8));
+    transform-origin: left center;
+    animation: hero-line 2.6s ease-in-out infinite;
+    opacity: 0.9;
+  }
+
+  @keyframes hero-shift {
+    to {
+      background-position: 220% center;
+    }
+  }
+
+  @keyframes hero-bob {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-1px); }
+  }
+
+  @keyframes hero-line {
+    0%, 100% { transform: scaleX(0.86); opacity: .7; }
+    50% { transform: scaleX(1); opacity: 1; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-name,
+    .hero-name::after {
+      animation: none !important;
+    }
+  }
+</style>

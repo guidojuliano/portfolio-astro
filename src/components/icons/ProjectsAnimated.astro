@@ -1,0 +1,45 @@
+<svg
+  {...Astro.props}
+  viewBox="0 0 64 64"
+  xmlns="http://www.w3.org/2000/svg"
+  fill="none"
+  aria-hidden="true"
+>
+  <rect x="8" y="12" width="48" height="40" rx="9" stroke="currentColor" stroke-width="2" opacity="0.35"></rect>
+  <rect x="14" y="20" width="20" height="14" rx="3" fill="#93c5fd" opacity="0.22"></rect>
+  <rect x="30" y="30" width="20" height="14" rx="3" fill="#fde68a" opacity="0.2"></rect>
+  <path d="M14 39h14M14 43h10M30 20h14M30 24h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+
+  <g class="card card-a">
+    <rect x="13.5" y="19.5" width="21" height="15" rx="3.5" stroke="#93c5fd" stroke-width="1.6"></rect>
+  </g>
+  <g class="card card-b">
+    <rect x="29.5" y="29.5" width="21" height="15" rx="3.5" stroke="#fde68a" stroke-width="1.6"></rect>
+  </g>
+</svg>
+
+<style>
+  .card {
+    transform-origin: center;
+    animation: project-float 2.4s ease-in-out infinite;
+  }
+
+  .card-b {
+    animation-delay: 0.28s;
+  }
+
+  @keyframes project-float {
+    0%, 100% {
+      transform: translateY(0);
+      opacity: .45;
+    }
+    50% {
+      transform: translateY(-2px);
+      opacity: 1;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card { animation: none !important; }
+  }
+</style>

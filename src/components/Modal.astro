@@ -1,13 +1,22 @@
+---
+import { Image } from "astro:assets";
+import { getLangFromUrl, useTranslations } from "../i18n/utils";
+import profileImage from "../media/images/profile.jpg";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
 <div
   id="popup-modal"
   tabindex="-1"
-  class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%)] max-h-full bg-black bg-opacity-50 backdrop-blur-sm"
+  class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%)] max-h-full bg-black/60 backdrop-blur-md transition-opacity"
 >
   <div class="relative p-4 w-full max-w-md max-h-full">
-    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+    <div class="relative rounded-2xl shadow border border-white/10 bg-neutral-900 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]">
       <button
         type="button"
-        class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+        class="absolute top-3 end-2.5 text-white/50 bg-transparent hover:bg-white/10 hover:text-white rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center transition-colors"
         data-modal-hide="popup-modal"
       >
         <svg
@@ -26,27 +35,35 @@
         </svg>
         <span class="sr-only">Close modal</span>
       </button>
-      <div class="p-4 md:p-10 text-center">
-        <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-          Do you want to send an email to <span class="text-black">
-            guidojulianou@gmail.com?</span
-          >
+      <div class="p-6 md:p-8 text-center">
+        <div class="w-16 h-16 rounded-full overflow-hidden border-2 border-purple-500/30 flex items-center justify-center mx-auto mb-4">
+          <Image src={profileImage} alt="Profile Picture" class="w-full h-full object-cover" />
+        </div>
+        <h3 class="mb-6 text-lg font-medium text-white/90">
+          {t("modal.title")}
+          <span class="block mt-1 font-semibold text-purple-300">
+            guidojulianou@gmail.com?
+          </span>
         </h3>
-        <a href="mailto:guidojulianou@gmail.com"
-          ><button
+        <div class="flex flex-col gap-3">
+          <a href="mailto:guidojulianou@gmail.com" class="w-full">
+            <button
+              data-modal-hide="popup-modal"
+              type="button"
+              class="w-full text-blue-950 bg-yellow-200 hover:bg-yellow-300 focus:ring-4 focus:outline-none focus:ring-yellow-400/50 font-semibold rounded-xl text-sm px-5 py-3 text-center transition-colors delay-75"
+            >
+              {t("modal.yes")}
+            </button>
+          </a>
+
+          <button
             data-modal-hide="popup-modal"
             type="button"
-            class="text-white bg-blue-600 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center"
-            >Yes, I'm sure</button
-          ></a
-        >
-
-        <button
-          data-modal-hide="popup-modal"
-          type="button"
-          class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-          >No, cancel</button
-        >
+            class="w-full py-3 px-5 text-sm font-medium text-white/80 focus:outline-none bg-white/5 rounded-xl border border-white/10 hover:bg-white/10 hover:text-white focus:z-10 focus:ring-4 focus:ring-gray-700 transition-colors delay-75"
+          >
+            {t("modal.no")}
+          </button>
+        </div>
       </div>
     </div>
   </div>

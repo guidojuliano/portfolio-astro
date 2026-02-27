@@ -7,6 +7,16 @@ const lang = getLangFromUrl(Astro.url);
 const languageKeys = Object.keys(languages);
 const currentLang = (languageKeys.includes(lang) ? lang : "es") as keyof typeof languages;
 const otherLang = Object.entries(languages).find(([code]) => code !== currentLang);
+
+const pathname = Astro.url.pathname;
+let switchUrl = "/";
+if (currentLang === "es") {
+  // If we are at /, it goes to /en/. If at /services, it goes to /en/services
+  switchUrl = `/en${pathname === "/" ? "/" : pathname}`;
+} else {
+  // We are at /en/... So remove the /en prefix to go back to es
+  switchUrl = pathname.replace(/^\/en/, "") || "/";
+}
 ---
 
 <div
@@ -18,7 +28,7 @@ const otherLang = Object.entries(languages).find(([code]) => code !== currentLan
     <>
       <span class="text-white/40">/</span>
       <a
-        href={`/${otherLang[0]}/`}
+        href={switchUrl}
         class="text-yellow-200 hover:underline"
         aria-label={`Switch language to ${otherLang[1]}`}
       >
