@@ -6,7 +6,7 @@ import LanguageSwitcher from "./LanguageSwitcher.astro";
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const pathname = Astro.url.pathname;
-const isServicesPage = pathname.endsWith("/services");
+const isServicesPage = /\/services\/?$/.test(pathname);
 
 const homeBase =
   lang === "en" ? "/en/" : pathname.startsWith("/es") ? "/es/" : "/";
@@ -135,3 +135,4 @@ const servicesHref =
       menu?.classList.toggle("hidden");
     });
 </script>
+
