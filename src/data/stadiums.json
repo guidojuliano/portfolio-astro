@@ -1,0 +1,148 @@
+{
+  "stadiums": [
+    {
+      "id": "14",
+      "name_en": "Lumen Field",
+      "fifa_name": "Seattle Stadium",
+      "city_en": "Seattle",
+      "country_en": "United States",
+      "capacity": 69000,
+      "region": "Western"
+    },
+    {
+      "id": "8",
+      "name_en": "Hard Rock Stadium",
+      "fifa_name": "Miami Stadium",
+      "city_en": "Miami (Miami Gardens)",
+      "country_en": "United States",
+      "capacity": 65000,
+      "region": "Eastern"
+    },
+    {
+      "id": "13",
+      "name_en": "BC Place",
+      "fifa_name": "BC Place Vancouver",
+      "city_en": "Vancouver",
+      "country_en": "Canada",
+      "capacity": 54000,
+      "region": "Western"
+    },
+    {
+      "id": "15",
+      "name_en": "Levi's Stadium",
+      "fifa_name": "San Francisco Bay Area Stadium",
+      "city_en": "San Francisco Bay Area (Santa Clara)",
+      "country_en": "United States",
+      "capacity": 71000,
+      "region": "Western"
+    },
+    {
+      "id": "3",
+      "name_en": "Estadio BBVA",
+      "fifa_name": "Estadio Monterrey",
+      "city_en": "Monterrey (Guadalupe)",
+      "country_en": "Mexico",
+      "capacity": 53500,
+      "region": "Central"
+    },
+    {
+      "id": "1",
+      "name_en": "Estadio Azteca",
+      "fifa_name": "Mexico City Stadium",
+      "city_en": "Mexico City",
+      "country_en": "Mexico",
+      "capacity": 83000,
+      "region": "Central"
+    },
+    {
+      "id": "2",
+      "name_en": "Estadio Akron",
+      "fifa_name": "Estadio Guadalajara",
+      "city_en": "Guadalajara (Zapopan)",
+      "country_en": "Mexico",
+      "capacity": 48000,
+      "region": "Central"
+    },
+    {
+      "id": "5",
+      "name_en": "NRG Stadium",
+      "fifa_name": "Houston Stadium",
+      "city_en": "Houston",
+      "country_en": "United States",
+      "capacity": 72000,
+      "region": "Central"
+    },
+    {
+      "id": "16",
+      "name_en": "SoFi Stadium",
+      "fifa_name": "Los Angeles Stadium",
+      "city_en": "Los Angeles (Inglewood)",
+      "country_en": "United States",
+      "capacity": 70000,
+      "region": "Western"
+    },
+    {
+      "id": "7",
+      "name_en": "Mercedes-Benz Stadium",
+      "fifa_name": "Atlanta Stadium",
+      "city_en": "Atlanta",
+      "country_en": "United States",
+      "capacity": 75000,
+      "region": "Eastern"
+    },
+    {
+      "id": "9",
+      "name_en": "Gillette Stadium",
+      "fifa_name": "Boston Stadium",
+      "city_en": "Boston (Foxborough)",
+      "country_en": "United States",
+      "capacity": 65000,
+      "region": "Eastern"
+    },
+    {
+      "id": "6",
+      "name_en": "GEHA Field at Arrowhead Stadium",
+      "fifa_name": "Kansas City Stadium",
+      "city_en": "Kansas City",
+      "country_en": "United States",
+      "capacity": 73000,
+      "region": "Central"
+    },
+    {
+      "id": "10",
+      "name_en": "Lincoln Financial Field",
+      "fifa_name": "Philadelphia Stadium",
+      "city_en": "Philadelphia",
+      "country_en": "United States",
+      "capacity": 69000,
+      "region": "Eastern"
+    },
+    {
+      "id": "4",
+      "name_en": "AT&T Stadium",
+      "fifa_name": "Dallas Stadium",
+      "city_en": "Dallas (Arlington, Texas)",
+      "country_en": "United States",
+      "capacity": 94000,
+      "region": "Central"
+    },
+    {
+      "id": "11",
+      "name_en": "MetLife Stadium",
+      "fifa_name": "New York/New Jersey Stadium",
+      "city_en": "New York/New Jersey (East Rutherford)",
+      "country_en": "United States",
+      "capacity": 82500,
+      "region": "Eastern"
+    },
+    {
+      "id": "12",
+      "name_en": "BMO Field",
+      "fifa_name": "Toronto Stadium",
+      "city_en": "Toronto",
+      "country_en": "Canada",
+      "capacity": 45000,
+      "region": "Eastern"
+    }
+  ]
+}

@@ -1,0 +1,872 @@
+---
+import Layout from "../layouts/Layout.astro";
+import matchesData from "../data/matches.json";
+import teamsData from "../data/teams.json";
+import stadiumsData from "../data/stadiums.json";
+
+// Traducciones de equipos al español
+const teamTranslations: Record<string, string> = {
+  "South Africa": "Sudáfrica",
+  "Brazil": "Brasil",
+  "Scotland": "Escocia",
+  "Turkey": "Turquía",
+  "Ivory Coast": "Costa de Marfil",
+  "Netherlands": "Países Bajos",
+  "Cape Verde": "Cabo Verde",
+  "France": "Francia",
+  "Tunisia": "Túnez",
+  "Egypt": "Egipto",
+  "Iraq": "Irak",
+  "Portugal": "Portugal",
+  "Uzbekistan": "Uzbekistán",
+  "Colombia": "Colombia",
+  "Ecuador": "Ecuador",
+  "Japan": "Japón",
+  "New Zealand": "Nueva Zelanda",
+  "Saudi Arabia": "Arabia Saudita",
+  "Austria": "Austria",
+  "Ghana": "Ghana",
+  "South Korea": "Corea del Sur",
+  "Spain": "España",
+  "Norway": "Noruega",
+  "Argentina": "Argentina",
+  "Democratic Republic of the Congo": "R. D. Congo",
+  "England": "Inglaterra",
+  "Czech Republic": "República Checa",
+  "Canada": "Canadá",
+  "Qatar": "Catar",
+  "Switzerland": "Suiza",
+  "Morocco": "Marruecos",
+  "Paraguay": "Paraguay",
+  "Curaçao": "Curazao",
+  "Sweden": "Suecia",
+  "Algeria": "Argelia",
+  "Jordan": "Jordania",
+  "Haiti": "Haití",
+  "Germany": "Alemania",
+  "Uruguay": "Uruguay",
+  "Senegal": "Senegal",
+  "Panama": "Panamá",
+  "Mexico": "México",
+  "Bosnia and Herzegovina": "Bosnia y Herz.",
+  "United States": "Estados Unidos",
+  "Australia": "Australia",
+  "Belgium": "Bélgica",
+  "Iran": "Irán",
+  "Croatia": "Croacia"
+};
+
+// Traducciones de fases
+const stageTranslations: Record<string, string> = {
+  "group": "Fase de Grupos",
+  "r32": "Dieciseisavos de Final",
+  "r16": "Octavos de Final",
+  "qf": "Cuartos de Final",
+  "sf": "Semifinales",
+  "third": "Tercer Puesto",
+  "final": "Final"
+};
+
+const stadiumTimezones: Record<string, any> = {
+  "1": { name: "Estadio Azteca", city: "Ciudad de México", country: "México", timezone: "America/Mexico_City", offset: -6 },
+  "2": { name: "Estadio Akron", city: "Guadalajara", country: "México", timezone: "America/Mexico_City", offset: -6 },
+  "3": { name: "Estadio BBVA", city: "Monterrey", country: "México", timezone: "America/Monterrey", offset: -6 },
+  "4": { name: "AT&T Stadium", city: "Dallas (Arlington)", country: "Estados Unidos", timezone: "America/Chicago", offset: -5 },
+  "5": { name: "NRG Stadium", city: "Houston", country: "Estados Unidos", timezone: "America/Chicago", offset: -5 },
+  "6": { name: "GEHA Field at Arrowhead Stadium", city: "Kansas City", country: "Estados Unidos", timezone: "America/Chicago", offset: -5 },
+  "7": { name: "Mercedes-Benz Stadium", city: "Atlanta", country: "Estados Unidos", timezone: "America/New_York", offset: -4 },
+  "8": { name: "Hard Rock Stadium", city: "Miami Gardens", country: "Estados Unidos", timezone: "America/New_York", offset: -4 },
+  "9": { name: "Gillette Stadium", city: "Boston (Foxborough)", country: "Estados Unidos", timezone: "America/New_York", offset: -4 },
+  "10": { name: "Lincoln Financial Field", city: "Filadelfia", country: "Estados Unidos", timezone: "America/New_York", offset: -4 },
+  "11": { name: "MetLife Stadium", city: "Nueva York / Nueva Jersey", country: "Estados Unidos", timezone: "America/New_York", offset: -4 },
+  "12": { name: "BMO Field", city: "Toronto", country: "Canadá", timezone: "America/Toronto", offset: -4 },
+  "13": { name: "BC Place", city: "Vancouver", country: "Canadá", timezone: "America/Vancouver", offset: -7 },
+  "14": { name: "Lumen Field", city: "Seattle", country: "Estados Unidos", timezone: "America/Los_Angeles", offset: -7 },
+  "15": { name: "Levi's Stadium", city: "San Francisco (Santa Clara)", country: "Estados Unidos", timezone: "America/Los_Angeles", offset: -7 },
+  "16": { name: "SoFi Stadium", city: "Los Ángeles", country: "Estados Unidos", timezone: "America/Los_Angeles", offset: -7 }
+};
+---
+
+<Layout title="Mundial 2026 - Fixture & Cuenta Regresiva | Guido Juliano">
+  <!-- Datos para el Script del Cliente -->
+  <div 
+    id="app-data" 
+    class="hidden" 
+    data-matches={JSON.stringify(matchesData.games)} 
+    data-teams={JSON.stringify(teamsData.teams)} 
+    data-stadiums={JSON.stringify(stadiumsData.stadiums)}
+    data-translations={JSON.stringify(teamTranslations)}
+    data-stages={JSON.stringify(stageTranslations)}
+    data-stadium-info={JSON.stringify(stadiumTimezones)}
+  ></div>
+
+  <main class="max-w-6xl mx-auto px-4 py-28 flex flex-col gap-8 text-slate-100 font-sans">
+    
+    <!-- Título Principal y Estado API -->
+    <section class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-slate-800 pb-6">
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="text-3xl">⚽</span>
+          <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight text-white font-display">
+            MUNDIAL <span class="bg-gradient-to-r from-amber-400 via-yellow-200 to-emerald-400 bg-clip-text text-transparent">FIFA 2026</span>
+          </h1>
+        </div>
+        <p class="text-xs text-slate-400 uppercase tracking-widest font-semibold mt-1">
+          Fixture Interactivo, Horario Local & Marcadores en Vivo
+        </p>
+      </div>
+
+      <div class="flex items-center gap-4">
+        <!-- Reloj local del usuario -->
+        <div class="text-left md:text-right">
+          <p class="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Tu Hora Local</p>
+          <p id="user-local-clock" class="text-sm font-semibold tracking-widest text-slate-200">--:--:--</p>
+        </div>
+        
+        <!-- Estado de la API -->
+        <div id="api-status" class="flex items-center gap-2 px-3 py-1.5 rounded-full text-[10px] font-bold uppercase bg-slate-900 border border-slate-800">
+          <span id="api-status-dot" class="w-2 h-2 rounded-full bg-yellow-500 animate-pulse"></span>
+          <span id="api-status-text" class="text-slate-400">Conectando...</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- HERO: Próximo partido o Partido en Vivo -->
+    <section id="hero-match" class="bg-slate-950/40 backdrop-blur-md border border-slate-800 rounded-3xl p-6 md:p-8 shadow-2xl relative overflow-hidden transition-all duration-300">
+      <!-- Fondo decorativo -->
+      <div class="absolute inset-0 bg-gradient-to-r from-emerald-950/10 to-amber-950/5 pointer-events-none"></div>
+      
+      <!-- Fila superior -->
+      <div class="flex justify-between items-center flex-wrap gap-2 relative z-10">
+        <span id="hero-tag" class="text-[10px] uppercase font-extrabold tracking-wider px-3 py-1 rounded-full border border-slate-800 bg-slate-900 text-slate-300">Cargando...</span>
+        <span id="hero-stadium" class="text-xs text-slate-400 font-medium">📍 --</span>
+      </div>
+
+      <!-- Versus -->
+      <div class="flex flex-col md:flex-row items-center justify-around gap-8 py-8 relative z-10">
+        <!-- Home Team -->
+        <div class="flex flex-col items-center gap-3 w-full md:w-1/3 text-center">
+          <img id="hero-home-flag" src="https://flagcdn.com/w80/un.png" alt="" class="w-24 h-16 object-cover rounded-xl shadow-lg border border-slate-800 transition-transform duration-300 hover:scale-105" />
+          <h3 id="hero-home-name" class="text-xl md:text-2xl font-black text-white font-display">--</h3>
+        </div>
+
+        <!-- Marcador central -->
+        <div class="flex flex-col items-center justify-center gap-3">
+          <div id="hero-live-time" class="hidden px-3 py-1 rounded-md bg-red-600 text-white text-[10px] font-black tracking-widest uppercase animate-pulse">
+            --
+          </div>
+          <div class="flex items-center gap-6">
+            <span id="hero-home-score" class="text-5xl md:text-7xl font-black font-display text-white tracking-tight">0</span>
+            <span class="text-2xl font-bold text-slate-600">-</span>
+            <span id="hero-away-score" class="text-5xl md:text-7xl font-black font-display text-white tracking-tight">0</span>
+          </div>
+          <span class="text-[10px] tracking-[0.2em] font-extrabold text-slate-400 uppercase">VS</span>
+        </div>
+
+        <!-- Away Team -->
+        <div class="flex flex-col items-center gap-3 w-full md:w-1/3 text-center">
+          <img id="hero-away-flag" src="https://flagcdn.com/w80/un.png" alt="" class="w-24 h-16 object-cover rounded-xl shadow-lg border border-slate-800 transition-transform duration-300 hover:scale-105" />
+          <h3 id="hero-away-name" class="text-xl md:text-2xl font-black text-white font-display">--</h3>
+        </div>
+      </div>
+
+      <!-- Fila inferior (Cuenta regresiva y horarios) -->
+      <div class="border-t border-slate-800/80 pt-6 flex flex-col md:flex-row justify-between items-center gap-6 relative z-10">
+        <!-- Cuenta regresiva -->
+        <div id="hero-countdown-container" class="flex flex-col gap-2 w-full md:w-auto items-center md:items-start">
+          <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Cuenta Regresiva</span>
+          <div class="flex gap-2">
+            <div class="flex flex-col items-center justify-center bg-slate-900/80 border border-slate-800 rounded-xl p-2.5 min-w-[64px]">
+              <span id="cd-days" class="text-2xl font-black text-white font-display leading-none">00</span>
+              <span class="text-[8px] uppercase font-bold text-slate-500 tracking-wider mt-1.5">Días</span>
+            </div>
+            <div class="flex flex-col items-center justify-center bg-slate-900/80 border border-slate-800 rounded-xl p-2.5 min-w-[64px]">
+              <span id="cd-hours" class="text-2xl font-black text-white font-display leading-none">00</span>
+              <span class="text-[8px] uppercase font-bold text-slate-500 tracking-wider mt-1.5">Horas</span>
+            </div>
+            <div class="flex flex-col items-center justify-center bg-slate-900/80 border border-slate-800 rounded-xl p-2.5 min-w-[64px]">
+              <span id="cd-minutes" class="text-2xl font-black text-white font-display leading-none">00</span>
+              <span class="text-[8px] uppercase font-bold text-slate-500 tracking-wider mt-1.5">Min</span>
+            </div>
+            <div class="flex flex-col items-center justify-center bg-slate-900/80 border border-slate-800 rounded-xl p-2.5 min-w-[64px]">
+              <span id="cd-seconds" class="text-2xl font-black text-white font-display leading-none">00</span>
+              <span class="text-[8px] uppercase font-bold text-slate-500 tracking-wider mt-1.5">Seg</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Horarios del partido -->
+        <div class="text-center md:text-right flex flex-col gap-1.5">
+          <p id="hero-kickoff-estadio" class="text-sm text-slate-300 font-medium">
+            Estadio: <strong class="text-white">--</strong>
+          </p>
+          <p id="hero-kickoff-user" class="text-sm text-slate-300 font-medium">
+            Tu Hora: <strong class="text-amber-400">--</strong>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- NAVEGACIÓN TABS -->
+    <div class="flex border-b border-slate-800 gap-1 overflow-x-auto scrollbar-none">
+      <button id="tab-btn-fixture" class="tab-btn active px-6 py-3.5 font-display font-bold text-sm border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition-all duration-300">
+        ⚽ Fixture y Resultados
+      </button>
+      <button id="tab-btn-groups" class="tab-btn px-6 py-3.5 font-display font-bold text-sm border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition-all duration-300">
+        📊 Grupos y Posiciones
+      </button>
+      <button id="tab-btn-stadiums" class="tab-btn px-6 py-3.5 font-display font-bold text-sm border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition-all duration-300">
+        🏟️ Estadios e Info
+      </button>
+    </div>
+
+    <!-- PESTAÑA 1: FIXTURE -->
+    <div id="tab-content-fixture" class="tab-content flex flex-col gap-6">
+      
+      <!-- Filtros -->
+      <div class="bg-slate-950/20 backdrop-blur-md border border-slate-800/80 rounded-2xl p-5 flex flex-col gap-4">
+        <h3 class="text-xs font-extrabold uppercase tracking-widest text-slate-400">
+          🔍 Filtrar y Buscar Partidos
+        </h3>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <!-- Búsqueda -->
+          <div class="flex flex-col gap-1.5">
+            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wide">Buscar selección</label>
+            <input id="filter-search" type="text" placeholder="Ej: Argentina, México, Brasil..." class="bg-slate-900/60 border border-slate-800 text-white px-4 py-2.5 rounded-xl text-sm focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/20 transition-all duration-300" />
+          </div>
+
+          <!-- Fase del torneo -->
+          <div class="flex flex-col gap-1.5">
+            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wide">Fase del Torneo</label>
+            <select id="filter-stage" class="bg-slate-900/60 border border-slate-800 text-white px-4 py-2.5 rounded-xl text-sm focus:outline-none focus:border-emerald-500 transition-all duration-300">
+              <option value="all">Todas las Fases</option>
+              <option value="group">Fase de Grupos</option>
+              <option value="r32">Dieciseisavos de Final</option>
+              <option value="r16">Octavos de Final</option>
+              <option value="qf">Cuartos de Final</option>
+              <option value="sf">Semifinales</option>
+              <option value="third">Tercer Puesto</option>
+              <option value="final">Final</option>
+            </select>
+          </div>
+
+          <!-- Grupos (si es Fase de Grupos) -->
+          <div class="flex flex-col gap-1.5">
+            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wide">Grupo</label>
+            <select id="filter-group" class="bg-slate-900/60 border border-slate-800 text-white px-4 py-2.5 rounded-xl text-sm focus:outline-none focus:border-emerald-500 transition-all duration-300">
+              <option value="all">Todos los Grupos</option>
+              <option value="A">Grupo A</option>
+              <option value="B">Grupo B</option>
+              <option value="C">Grupo C</option>
+              <option value="D">Grupo D</option>
+              <option value="E">Grupo E</option>
+              <option value="F">Grupo F</option>
+              <option value="G">Grupo G</option>
+              <option value="H">Grupo H</option>
+              <option value="I">Grupo I</option>
+              <option value="J">Grupo J</option>
+              <option value="K">Grupo K</option>
+              <option value="L">Grupo L</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Filtros Rápidos Checkboxes -->
+        <div class="flex flex-wrap gap-5 pt-3 border-t border-slate-800/60">
+          <label class="flex items-center gap-2.5 text-[10px] font-bold text-slate-400 uppercase tracking-wider cursor-pointer select-none">
+            <input id="filter-check-live" type="checkbox" class="w-4 h-4 rounded border-slate-800 bg-slate-900 text-emerald-600 focus:ring-emerald-500/20 accent-emerald-500 cursor-pointer" />
+            Solo En Vivo / Terminados
+          </label>
+          <label class="flex items-center gap-2.5 text-[10px] font-bold text-slate-400 uppercase tracking-wider cursor-pointer select-none">
+            <input id="filter-check-favorites" type="checkbox" class="w-4 h-4 rounded border-slate-800 bg-slate-900 text-emerald-600 focus:ring-emerald-500/20 accent-emerald-500 cursor-pointer" />
+            Favoritos de América
+          </label>
+        </div>
+      </div>
+
+      <!-- Timeline partidos -->
+      <div class="flex flex-col gap-4">
+        <div class="flex justify-between items-center">
+          <h2 class="text-lg md:text-xl font-bold font-display text-white">
+            📅 Partidos <span id="matches-count" class="text-xs bg-emerald-600/20 text-emerald-400 px-2 py-0.5 rounded-full font-extrabold border border-emerald-500/10 ml-2">104</span>
+          </h2>
+        </div>
+
+        <!-- Matches list grid -->
+        <div id="matches-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Dinámico -->
+        </div>
+
+        <!-- Empty state -->
+        <div id="matches-empty" class="hidden bg-slate-950/20 border border-slate-800 rounded-2xl p-12 text-center flex flex-col items-center gap-3">
+          <span class="text-3xl">🔍</span>
+          <h4 class="font-bold text-slate-200">No se encontraron partidos</h4>
+          <p class="text-xs text-slate-400">Intenta reajustar los filtros.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PESTAÑA 2: GRUPOS -->
+    <div id="tab-content-groups" class="tab-content hidden">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="groups-grid">
+        <!-- Dinámico -->
+      </div>
+    </div>
+
+    <!-- PESTAÑA 3: ESTADIOS -->
+    <div id="tab-content-stadiums" class="tab-content hidden">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="stadiums-grid">
+        <!-- Dinámico -->
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<style>
+  .tab-btn.active {
+    color: #fbbf24 !important; /* Gold text */
+    border-bottom-color: #fbbf24 !important; /* Gold border */
+  }
+  .hidden {
+    display: none !important;
+  }
+</style>
+
+<script>
+  const appDataEl = document.getElementById('app-data');
+  if (!appDataEl) throw new Error("App data elements not found");
+  
+  const initialMatches = JSON.parse(appDataEl.getAttribute('data-matches') || '[]');
+  const initialTeams = JSON.parse(appDataEl.getAttribute('data-teams') || '[]');
+  const initialStadiums = JSON.parse(appDataEl.getAttribute('data-stadiums') || '[]');
+  const teamTranslations = JSON.parse(appDataEl.getAttribute('data-translations') || '{}');
+  const stageTranslations = JSON.parse(appDataEl.getAttribute('data-stages') || '{}');
+  const stadiumInfo = JSON.parse(appDataEl.getAttribute('data-stadium-info') || '{}');
+
+  let matches = [...initialMatches];
+  let teams = [...initialTeams];
+  let stadiums = [...initialStadiums];
+  
+  // Header clock
+  setInterval(() => {
+    const clockEl = document.getElementById('user-local-clock');
+    if (clockEl) {
+      clockEl.textContent = new Date().toLocaleTimeString('es-ES');
+    }
+  }, 1000);
+
+  // Tab switching
+  const tabs = [
+    { btn: 'tab-btn-fixture', content: 'tab-content-fixture' },
+    { btn: 'tab-btn-groups', content: 'tab-content-groups' },
+    { btn: 'tab-btn-stadiums', content: 'tab-content-stadiums' }
+  ];
+
+  tabs.forEach(tab => {
+    const btnEl = document.getElementById(tab.btn);
+    if (btnEl) {
+      btnEl.addEventListener('click', () => {
+        tabs.forEach(t => {
+          document.getElementById(t.btn)?.classList.remove('active');
+          document.getElementById(t.content)?.classList.add('hidden');
+        });
+        btnEl.classList.add('active');
+        document.getElementById(tab.content)?.classList.remove('hidden');
+      });
+    }
+  });
+
+  function getTeamName(englishName: string): string {
+    return teamTranslations[englishName] || englishName;
+  }
+
+  function getMatchDate(localDateStr: string, stadiumId: string): Date {
+    const info = stadiumInfo[stadiumId] || { offset: -4 };
+    const offset = info.offset;
+    
+    const [datePart, timePart] = localDateStr.split(' ');
+    const [month, day, year] = datePart.split('/');
+    const [hour, minute] = timePart.split(':');
+    
+    const absOffset = Math.abs(offset);
+    const sign = offset >= 0 ? '+' : '-';
+    const formattedOffset = `${sign}${String(absOffset).padStart(2, '0')}:00`;
+    
+    const isoString = `${year}-${month}-${day}T${hour}:${minute}:00${formattedOffset}`;
+    return new Date(isoString);
+  }
+
+  function formatMatchDate(date: Date): { day: string, time: string } {
+    const optionsDay: Intl.DateTimeFormatOptions = { weekday: 'long', day: 'numeric', month: 'short' };
+    const optionsTime: Intl.DateTimeFormatOptions = { hour: '2-digit', minute: '2-digit' };
+    
+    const dayStr = date.toLocaleDateString('es-ES', optionsDay);
+    const timeStr = date.toLocaleTimeString('es-ES', optionsTime);
+    
+    return {
+      day: dayStr.charAt(0).toUpperCase() + dayStr.slice(1),
+      time: timeStr
+    };
+  }
+
+  let countdownInterval: number | undefined;
+  function updateCountdown(targetDate: Date) {
+    if (countdownInterval) clearInterval(countdownInterval);
+    
+    const daysEl = document.getElementById('cd-days');
+    const hoursEl = document.getElementById('cd-hours');
+    const minsEl = document.getElementById('cd-minutes');
+    const secsEl = document.getElementById('cd-seconds');
+    
+    function run() {
+      const now = new Date().getTime();
+      const distance = targetDate.getTime() - now;
+      
+      if (distance < 0) {
+        if (daysEl) daysEl.textContent = '00';
+        if (hoursEl) hoursEl.textContent = '00';
+        if (minsEl) minsEl.textContent = '00';
+        if (secsEl) secsEl.textContent = '00';
+        clearInterval(countdownInterval);
+        return;
+      }
+      
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      
+      if (daysEl) daysEl.textContent = String(days).padStart(2, '0');
+      if (hoursEl) hoursEl.textContent = String(hours).padStart(2, '0');
+      if (minsEl) minsEl.textContent = String(minutes).padStart(2, '0');
+      if (secsEl) secsEl.textContent = String(seconds).padStart(2, '0');
+    }
+    
+    run();
+    countdownInterval = setInterval(run, 1000) as unknown as number;
+  }
+
+  function renderHero() {
+    let heroMatch = matches.find(m => m.finished === "FALSE" && m.time_elapsed !== "notstarted");
+    
+    if (!heroMatch) {
+      const upcomingMatches = matches
+        .filter(m => m.finished === "FALSE")
+        .map(m => ({ match: m, date: getMatchDate(m.local_date, m.stadium_id) }))
+        .sort((a, b) => a.date.getTime() - b.date.getTime());
+        
+      if (upcomingMatches.length > 0) {
+        heroMatch = upcomingMatches[0].match;
+      } else {
+        heroMatch = matches.find(m => m.id === "104") || matches[matches.length - 1];
+      }
+    }
+    
+    if (!heroMatch) return;
+    
+    const matchDate = getMatchDate(heroMatch.local_date, heroMatch.stadium_id);
+    const formatted = formatMatchDate(matchDate);
+    const sInfo = stadiumInfo[heroMatch.stadium_id] || { name: "Estadio", city: "--", country: "--" };
+    
+    const homeFlagEl = document.getElementById('hero-home-flag') as HTMLImageElement;
+    const awayFlagEl = document.getElementById('hero-away-flag') as HTMLImageElement;
+    
+    const homeTeamCode = teams.find(t => t.id === heroMatch.home_team_id)?.iso2.toLowerCase() || 'un';
+    const awayTeamCode = teams.find(t => t.id === heroMatch.away_team_id)?.iso2.toLowerCase() || 'un';
+    
+    if (homeFlagEl) homeFlagEl.src = heroMatch.home_team_id === "0" ? 'https://flagcdn.com/w80/un.png' : `https://flagcdn.com/w80/${homeTeamCode}.png`;
+    if (awayFlagEl) awayFlagEl.src = heroMatch.away_team_id === "0" ? 'https://flagcdn.com/w80/un.png' : `https://flagcdn.com/w80/${awayTeamCode}.png`;
+    
+    const homeNameEl = document.getElementById('hero-home-name');
+    const awayNameEl = document.getElementById('hero-away-name');
+    if (homeNameEl) homeNameEl.textContent = heroMatch.home_team_id === "0" ? (heroMatch.home_team_label || '--') : getTeamName(heroMatch.home_team_name_en);
+    if (awayNameEl) awayNameEl.textContent = heroMatch.away_team_id === "0" ? (heroMatch.away_team_label || '--') : getTeamName(heroMatch.away_team_name_en);
+    
+    const homeScoreEl = document.getElementById('hero-home-score');
+    const awayScoreEl = document.getElementById('hero-away-score');
+    if (homeScoreEl) homeScoreEl.textContent = heroMatch.home_score;
+    if (awayScoreEl) awayScoreEl.textContent = heroMatch.away_score;
+    
+    const tagEl = document.getElementById('hero-tag');
+    const liveTimeEl = document.getElementById('hero-live-time');
+    const cdContainer = document.getElementById('hero-countdown-container');
+    const heroCardEl = document.getElementById('hero-match');
+    
+    const groupOrStage = heroMatch.type === 'group' ? `Grupo ${heroMatch.group}` : (stageTranslations[heroMatch.type] || heroMatch.group);
+    
+    if (heroMatch.finished === "TRUE") {
+      if (heroCardEl) heroCardEl.className = "bg-slate-950/40 backdrop-blur-md border border-slate-800 rounded-3xl p-6 md:p-8 shadow-2xl relative overflow-hidden transition-all duration-300";
+      if (tagEl) {
+        tagEl.textContent = `FINALIZADO • ${groupOrStage}`;
+        tagEl.className = "text-[10px] uppercase font-extrabold tracking-wider px-3 py-1 rounded-full border border-slate-800 bg-slate-900 text-slate-500";
+      }
+      if (liveTimeEl) liveTimeEl.classList.add('hidden');
+      if (cdContainer) cdContainer.classList.add('hidden');
+    } else if (heroMatch.time_elapsed !== "notstarted") {
+      if (heroCardEl) heroCardEl.className = "bg-slate-950/40 backdrop-blur-md border border-red-500/30 rounded-3xl p-6 md:p-8 shadow-2xl shadow-red-500/5 relative overflow-hidden transition-all duration-300";
+      if (tagEl) {
+        tagEl.textContent = `⚽ EN VIVO • ${groupOrStage}`;
+        tagEl.className = "text-[10px] uppercase font-extrabold tracking-wider px-3 py-1 rounded-full border border-red-500/20 bg-red-650/10 text-red-400";
+      }
+      if (liveTimeEl) {
+        liveTimeEl.classList.remove('hidden');
+        liveTimeEl.textContent = heroMatch.time_elapsed === 'halfTime' ? 'Entretiempo' : `${heroMatch.time_elapsed}'`;
+      }
+      if (cdContainer) cdContainer.classList.add('hidden');
+    } else {
+      if (heroCardEl) heroCardEl.className = "bg-slate-950/40 backdrop-blur-md border border-amber-500/30 rounded-3xl p-6 md:p-8 shadow-2xl shadow-amber-500/5 relative overflow-hidden transition-all duration-300";
+      if (tagEl) {
+        tagEl.textContent = `PRÓXIMO PARTIDO • ${groupOrStage}`;
+        tagEl.className = "text-[10px] uppercase font-extrabold tracking-wider px-3 py-1 rounded-full border border-amber-500/20 bg-amber-950/20 text-amber-400";
+      }
+      if (liveTimeEl) liveTimeEl.classList.add('hidden');
+      if (cdContainer) {
+        cdContainer.classList.remove('hidden');
+        updateCountdown(matchDate);
+      }
+    }
+    
+    const stadiumEl = document.getElementById('hero-stadium');
+    if (stadiumEl) {
+      stadiumEl.textContent = `📍 ${sInfo.name}, ${sInfo.city} (${sInfo.country})`;
+    }
+    
+    const kickoffEstadioEl = document.getElementById('hero-kickoff-estadio');
+    if (kickoffEstadioEl) {
+      const timePart = heroMatch.local_date.split(' ')[1];
+      kickoffEstadioEl.innerHTML = `Estadio: <strong class="text-white">${timePart} hs (${sInfo.city})</strong>`;
+    }
+    
+    const kickoffUserEl = document.getElementById('hero-kickoff-user');
+    if (kickoffUserEl) {
+      kickoffUserEl.innerHTML = `Tu Hora: <strong class="text-amber-400 font-bold">${formatted.day} - ${formatted.time} hs</strong>`;
+    }
+  }
+
+  function renderMatchesList() {
+    const gridEl = document.getElementById('matches-grid');
+    const emptyEl = document.getElementById('matches-empty');
+    const countEl = document.getElementById('matches-count');
+    
+    if (!gridEl) return;
+    
+    const searchVal = (document.getElementById('filter-search') as HTMLInputElement)?.value.toLowerCase() || '';
+    const stageVal = (document.getElementById('filter-stage') as HTMLSelectElement)?.value || 'all';
+    const groupVal = (document.getElementById('filter-group') as HTMLSelectElement)?.value || 'all';
+    const checkLive = (document.getElementById('filter-check-live') as HTMLInputElement)?.checked || false;
+    const checkFavs = (document.getElementById('filter-check-favorites') as HTMLInputElement)?.checked || false;
+    
+    const filtered = matches.filter(m => {
+      const homeName = m.home_team_id === "0" ? (m.home_team_label || '') : getTeamName(m.home_team_name_en);
+      const awayName = m.away_team_id === "0" ? (m.away_team_label || '') : getTeamName(m.away_team_name_en);
+      const searchMatch = homeName.toLowerCase().includes(searchVal) || awayName.toLowerCase().includes(searchVal);
+      
+      const stageMatch = stageVal === 'all' || m.type === stageVal;
+      const groupMatch = groupVal === 'all' || (m.type === 'group' && m.group === groupVal);
+      const liveMatch = !checkLive || m.finished === "TRUE" || m.time_elapsed !== "notstarted";
+      
+      const favoriteTeams = ["Argentina", "México", "United States", "Brazil", "Colombia"];
+      const favsMatch = !checkFavs || 
+                        favoriteTeams.includes(m.home_team_name_en) || 
+                        favoriteTeams.includes(m.away_team_name_en);
+                        
+      return searchMatch && stageMatch && groupMatch && liveMatch && favsMatch;
+    });
+
+    const sorted = [...filtered].sort((a, b) => {
+      const aLive = a.finished === "FALSE" && a.time_elapsed !== "notstarted" ? 1 : 0;
+      const bLive = b.finished === "FALSE" && b.time_elapsed !== "notstarted" ? 1 : 0;
+      if (aLive !== bLive) return bLive - aLive;
+      
+      const aDate = getMatchDate(a.local_date, a.stadium_id).getTime();
+      const bDate = getMatchDate(b.local_date, b.stadium_id).getTime();
+      return aDate - bDate;
+    });
+
+    if (countEl) countEl.textContent = String(sorted.length);
+    
+    gridEl.innerHTML = '';
+    
+    if (sorted.length === 0) {
+      gridEl.classList.add('hidden');
+      emptyEl?.classList.remove('hidden');
+      return;
+    }
+    
+    gridEl.classList.remove('hidden');
+    emptyEl?.classList.add('hidden');
+    
+    sorted.forEach(m => {
+      const mDate = getMatchDate(m.local_date, m.stadium_id);
+      const formatted = formatMatchDate(mDate);
+      const sInfo = stadiumInfo[m.stadium_id] || { name: "Estadio", city: "--" };
+      
+      const homeName = m.home_team_id === "0" ? (m.home_team_label || 'Pendiente') : getTeamName(m.home_team_name_en);
+      const awayName = m.away_team_id === "0" ? (m.away_team_label || 'Pendiente') : getTeamName(m.away_team_name_en);
+      
+      const homeTeamCode = teams.find(t => t.id === m.home_team_id)?.iso2.toLowerCase() || 'un';
+      const awayTeamCode = teams.find(t => t.id === m.away_team_id)?.iso2.toLowerCase() || 'un';
+      
+      let badgeHTML = '';
+      let cardBorderClass = 'border-slate-800/80 shadow-slate-950/20';
+      
+      if (m.finished === "TRUE") {
+        badgeHTML = `<span class="px-2 py-0.5 rounded text-[8px] font-bold bg-slate-800 text-slate-500 uppercase">Terminado</span>`;
+      } else if (m.time_elapsed !== "notstarted") {
+        const liveTime = m.time_elapsed === 'halfTime' ? 'Entretiempo' : `${m.time_elapsed}'`;
+        badgeHTML = `<span class="px-2 py-0.5 rounded text-[8px] font-bold bg-red-600 text-white uppercase animate-pulse">EN VIVO ${liveTime}</span>`;
+        cardBorderClass = 'border-red-500/20 shadow-red-500/5';
+      } else {
+        badgeHTML = `<span class="px-2 py-0.5 rounded text-[8px] font-bold bg-emerald-950/50 text-emerald-400 border border-emerald-500/10 uppercase">Próximamente</span>`;
+      }
+      
+      const cardHtml = `
+        <div class="bg-slate-900/40 backdrop-blur-sm border ${cardBorderClass} rounded-2xl p-4 shadow-lg flex flex-col justify-between gap-4 transition-all duration-300 hover:border-slate-700/80">
+          <div class="flex justify-between items-center text-[9px] text-slate-500 font-bold uppercase tracking-wider border-b border-slate-800/40 pb-2">
+            <span>Match #${m.id} • ${m.type === 'group' ? `Grupo ${m.group}` : (stageTranslations[m.type] || m.group)}</span>
+            ${badgeHTML}
+          </div>
+          
+          <div class="flex justify-between items-center py-1.5 gap-3">
+            <div class="flex items-center gap-2.5 w-[42%] justify-start">
+              <img src="${m.home_team_id === "0" ? 'https://flagcdn.com/w80/un.png' : `https://flagcdn.com/w80/${homeTeamCode}.png`}" alt="" class="w-8 h-5.5 object-cover rounded shadow border border-slate-800" />
+              <span class="text-sm font-bold text-slate-200 truncate">${homeName}</span>
+            </div>
+            
+            <div class="flex items-center justify-center gap-1.5 px-3 py-1 rounded-lg bg-slate-950/60 border border-slate-800/80 font-display font-black text-sm text-white min-w-[56px]">
+              <span>${m.home_score}</span>
+              <span class="text-slate-600 font-medium text-xs">:</span>
+              <span>${m.away_score}</span>
+            </div>
+            
+            <div class="flex items-center gap-2.5 w-[42%] justify-end text-right">
+              <span class="text-sm font-bold text-slate-200 truncate">${awayName}</span>
+              <img src="${m.away_team_id === "0" ? 'https://flagcdn.com/w80/un.png' : `https://flagcdn.com/w80/${awayTeamCode}.png`}" alt="" class="w-8 h-5.5 object-cover rounded shadow border border-slate-800" />
+            </div>
+          </div>
+          
+          <div class="flex justify-between items-center text-[9px] text-slate-400 pt-2 border-t border-slate-800/40">
+            <span class="truncate max-w-[50%]">🏟️ ${sInfo.name}</span>
+            <span class="text-amber-400 font-bold tracking-wide text-right">${formatted.day} • ${formatted.time} hs</span>
+          </div>
+        </div>
+      `;
+      
+      gridEl.insertAdjacentHTML('beforeend', cardHtml);
+    });
+  }
+
+  function renderGroupsAndPositions() {
+    const gridEl = document.getElementById('groups-grid');
+    if (!gridEl) return;
+    
+    gridEl.innerHTML = '';
+    
+    const groupsMap: Record<string, any[]> = {};
+    const alphabet = "ABCDEFGHIJKL".split("");
+    alphabet.forEach(letter => {
+      groupsMap[letter] = [];
+    });
+    
+    teams.forEach(t => {
+      if (t.groups && groupsMap[t.groups]) {
+        groupsMap[t.groups].push({
+          id: t.id,
+          name: getTeamName(t.name_en),
+          flag: t.flag,
+          iso2: t.iso2,
+          pj: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, gd: 0, pts: 0
+        });
+      }
+    });
+    
+    matches.forEach(m => {
+      if (m.type === 'group' && (m.finished === "TRUE" || m.time_elapsed !== "notstarted")) {
+        const homeScore = parseInt(m.home_score) || 0;
+        const awayScore = parseInt(m.away_score) || 0;
+        const groupLetter = m.group;
+        
+        const groupTeams = groupsMap[groupLetter];
+        if (groupTeams) {
+          const homeTeamObj = groupTeams.find(t => t.id === m.home_team_id);
+          const awayTeamObj = groupTeams.find(t => t.id === m.away_team_id);
+          
+          if (homeTeamObj && awayTeamObj) {
+            homeTeamObj.pj += 1;
+            awayTeamObj.pj += 1;
+            homeTeamObj.gf += homeScore;
+            homeTeamObj.ga += awayScore;
+            awayTeamObj.gf += awayScore;
+            awayTeamObj.ga += homeScore;
+            homeTeamObj.gd = homeTeamObj.gf - homeTeamObj.ga;
+            awayTeamObj.gd = awayTeamObj.gf - awayTeamObj.ga;
+            
+            if (homeScore > awayScore) {
+              homeTeamObj.w += 1;
+              homeTeamObj.pts += 3;
+              awayTeamObj.l += 1;
+            } else if (homeScore < awayScore) {
+              awayTeamObj.w += 1;
+              awayTeamObj.pts += 3;
+              homeTeamObj.l += 1;
+            } else {
+              homeTeamObj.d += 1;
+              homeTeamObj.pts += 1;
+              awayTeamObj.d += 1;
+              awayTeamObj.pts += 1;
+            }
+          }
+        }
+      }
+    });
+    
+    alphabet.forEach(groupLetter => {
+      const groupTeams = groupsMap[groupLetter];
+      groupTeams.sort((a, b) => {
+        if (b.pts !== a.pts) return b.pts - a.pts;
+        if (b.gd !== a.gd) return b.gd - a.gd;
+        return b.gf - a.gf;
+      });
+      
+      const rowsHtml = groupTeams.map((t, idx) => `
+        <tr class="border-b border-slate-900/40 text-xs text-slate-300">
+          <td class="py-2.5 font-bold text-center text-slate-500 w-6">${idx + 1}</td>
+          <td class="py-2.5 flex items-center gap-2 font-semibold text-slate-100">
+            <img src="https://flagcdn.com/w80/${t.iso2.toLowerCase()}.png" class="w-5 h-3.5 object-cover rounded shadow border border-slate-950" alt="" />
+            <span class="truncate max-w-[100px]">${t.name}</span>
+          </td>
+          <td class="py-2.5 text-center font-medium">${t.pj}</td>
+          <td class="py-2.5 text-center font-medium">${t.w}</td>
+          <td class="py-2.5 text-center font-medium">${t.d}</td>
+          <td class="py-2.5 text-center font-medium">${t.l}</td>
+          <td class="py-2.5 text-center font-bold ${t.gd > 0 ? 'text-emerald-400' : (t.gd < 0 ? 'text-red-400' : '')}">${t.gd > 0 ? '+' + t.gd : t.gd}</td>
+          <td class="py-2.5 text-center font-black text-amber-400">${t.pts}</td>
+        </tr>
+      `).join('');
+      
+      const groupCardHtml = `
+        <div class="bg-slate-900/40 backdrop-blur-sm border border-slate-800/80 rounded-2xl p-5 flex flex-col gap-3 shadow-lg">
+          <div class="flex justify-between items-center border-b border-slate-800 pb-2">
+            <h3 class="text-sm font-black text-white font-display uppercase tracking-tight">
+              GRUPO <span class="text-amber-400">${groupLetter}</span>
+            </h3>
+            <span class="text-[9px] font-bold text-slate-500 uppercase tracking-wider bg-slate-950 border border-slate-800/80 px-2 py-0.5 rounded-full">Fase de Grupos</span>
+          </div>
+          
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="text-[9px] uppercase font-bold text-slate-500 border-b border-slate-800">
+                <th class="py-1.5 text-center w-6">#</th>
+                <th class="py-1.5">Equipo</th>
+                <th class="py-1.5 text-center">PJ</th>
+                <th class="py-1.5 text-center">PG</th>
+                <th class="py-1.5 text-center">PE</th>
+                <th class="py-1.5 text-center">PP</th>
+                <th class="py-1.5 text-center">DG</th>
+                <th class="py-1.5 text-center text-amber-400">PTS</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${rowsHtml}
+            </tbody>
+          </table>
+        </div>
+      `;
+      
+      gridEl.insertAdjacentHTML('beforeend', groupCardHtml);
+    });
+  }
+
+  function renderStadiums() {
+    const gridEl = document.getElementById('stadiums-grid');
+    if (!gridEl) return;
+    
+    gridEl.innerHTML = '';
+    
+    stadiums.forEach(s => {
+      const sInfo = stadiumInfo[s.id] || { name: s.name_en, city: s.city_en, country: s.country_en };
+      const countryFlagCode = s.country_en === 'United States' ? 'us' : (s.country_en === 'Mexico' || s.country_en === 'México' ? 'mx' : 'ca');
+      
+      const cardHtml = `
+        <div class="bg-slate-900/40 backdrop-blur-sm border border-slate-800/80 rounded-2xl p-4 shadow-lg flex flex-col justify-between gap-3.5 transition-all duration-300 hover:border-slate-700/80">
+          <div class="flex justify-between items-center border-b border-slate-850 pb-2 text-[9px] text-slate-500 font-bold uppercase tracking-wider">
+            <span class="flex items-center gap-1.5">
+              <img src="https://flagcdn.com/w80/${countryFlagCode}.png" class="w-4.5 h-3 object-cover rounded-sm border border-slate-950" alt="" />
+              ${sInfo.country}
+            </span>
+            <span>👥 ${s.capacity.toLocaleString('es-ES')}</span>
+          </div>
+          
+          <div class="flex flex-col gap-0.5">
+            <h4 class="text-sm font-bold text-slate-100 truncate tracking-tight" title="${s.name_en}">
+              ${s.name_en}
+            </h4>
+            <p class="text-xs text-slate-400 font-medium">
+              📍 ${sInfo.city}
+            </p>
+          </div>
+          
+          <div class="text-[9px] uppercase font-bold text-slate-400 bg-slate-950 border border-slate-855 px-2 py-1.5 rounded flex justify-between tracking-wide">
+            <span>Región: ${s.region}</span>
+            <span>UTC ${sInfo.offset >= 0 ? '+' + sInfo.offset : sInfo.offset}</span>
+          </div>
+        </div>
+      `;
+      
+      gridEl.insertAdjacentHTML('beforeend', cardHtml);
+    });
+  }
+
+  document.getElementById('filter-search')?.addEventListener('input', renderMatchesList);
+  document.getElementById('filter-stage')?.addEventListener('change', renderMatchesList);
+  document.getElementById('filter-group')?.addEventListener('change', renderMatchesList);
+  document.getElementById('filter-check-live')?.addEventListener('change', renderMatchesList);
+  document.getElementById('filter-check-favorites')?.addEventListener('change', renderMatchesList);
+
+  async function fetchLiveUpdates() {
+    const apiStatusDot = document.getElementById('api-status-dot');
+    const apiStatusText = document.getElementById('api-status-text');
+    
+    try {
+      const response = await fetch('/api/games');
+      if (!response.ok) throw new Error("API Response not OK");
+      
+      const data = await response.json();
+      
+      if (data && data.games && Array.isArray(data.games)) {
+        matches = data.games;
+        
+        if (apiStatusDot) {
+          apiStatusDot.className = "w-2 h-2 rounded-full bg-emerald-500";
+        }
+        if (apiStatusText) {
+          apiStatusText.textContent = "Conectado (En Vivo)";
+          apiStatusText.className = "text-emerald-400";
+        }
+        
+        renderHero();
+        renderMatchesList();
+        renderGroupsAndPositions();
+      }
+    } catch (err) {
+      console.warn("Error fetching live data, falling back to local database:", err);
+      
+      if (apiStatusDot) {
+        apiStatusDot.className = "w-2 h-2 rounded-full bg-blue-500";
+      }
+      if (apiStatusText) {
+        apiStatusText.textContent = "Modo Respaldo (Local)";
+        apiStatusText.className = "text-blue-400";
+      }
+    }
+  }
+
+  renderHero();
+  renderMatchesList();
+  renderGroupsAndPositions();
+  renderStadiums();
+  
+  fetchLiveUpdates();
+  setInterval(fetchLiveUpdates, 30000);
+</script>
