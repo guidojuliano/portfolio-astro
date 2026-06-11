@@ -125,7 +125,7 @@ const stadiumTimezones: Record<string, any> = {
         
         <!-- Estado de la API -->
         <div id="api-status" class="flex items-center gap-2 px-3 py-1.5 rounded-full text-[10px] font-bold uppercase bg-slate-900 border border-slate-800">
-          <span id="api-status-dot" class="w-2 h-2 rounded-full bg-yellow-500 animate-pulse"></span>
+          <span id="api-status-dot" class="w-2.5 h-2.5 rounded-full bg-yellow-500 animate-pulse"></span>
           <span id="api-status-text" class="text-slate-400">Conectando...</span>
         </div>
       </div>
@@ -347,6 +347,18 @@ const stadiumTimezones: Record<string, any> = {
   let matches = [...initialMatches];
   let teams = [...initialTeams];
   let stadiums = [...initialStadiums];
+
+  // Función de sanitización para prevenir XSS
+  function sanitize(str: any): string {
+    if (str === null || str === undefined) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#x27;')
+      .replace(/\//g, '&#x2F;');
+  }
   
   // Header clock
   setInterval(() => {
@@ -535,12 +547,12 @@ const stadiumTimezones: Record<string, any> = {
     const kickoffEstadioEl = document.getElementById('hero-kickoff-estadio');
     if (kickoffEstadioEl) {
       const timePart = heroMatch.local_date.split(' ')[1];
-      kickoffEstadioEl.innerHTML = `Estadio: <strong class="text-white">${timePart} hs (${sInfo.city})</strong>`;
+      kickoffEstadioEl.innerHTML = `Estadio: <strong class="text-white">${sanitize(timePart)} hs (${sanitize(sInfo.city)})</strong>`;
     }
     
     const kickoffUserEl = document.getElementById('hero-kickoff-user');
     if (kickoffUserEl) {
-      kickoffUserEl.innerHTML = `Tu Hora: <strong class="text-amber-400 font-bold">${formatted.day} - ${formatted.time} hs</strong>`;
+      kickoffUserEl.innerHTML = `Tu Hora: <strong class="text-amber-400 font-bold">${sanitize(formatted.day)} - ${sanitize(formatted.time)} hs</strong>`;
     }
   }
 
@@ -615,7 +627,7 @@ const stadiumTimezones: Record<string, any> = {
         badgeHTML = `<span class="px-2 py-0.5 rounded text-[8px] font-bold bg-slate-800 text-slate-500 uppercase">Terminado</span>`;
       } else if (m.time_elapsed !== "notstarted") {
         const liveTime = m.time_elapsed === 'halfTime' ? 'Entretiempo' : `${m.time_elapsed}'`;
-        badgeHTML = `<span class="px-2 py-0.5 rounded text-[8px] font-bold bg-red-600 text-white uppercase animate-pulse">EN VIVO ${liveTime}</span>`;
+        badgeHTML = `<span class="px-2 py-0.5 rounded text-[8px] font-bold bg-red-600 text-white uppercase animate-pulse">EN VIVO ${sanitize(liveTime)}</span>`;
         cardBorderClass = 'border-red-500/20 shadow-red-500/5';
       } else {
         badgeHTML = `<span class="px-2 py-0.5 rounded text-[8px] font-bold bg-emerald-950/50 text-emerald-400 border border-emerald-500/10 uppercase">Próximamente</span>`;
@@ -624,31 +636,31 @@ const stadiumTimezones: Record<string, any> = {
       const cardHtml = `
         <div class="bg-slate-900/40 backdrop-blur-sm border ${cardBorderClass} rounded-2xl p-4 shadow-lg flex flex-col justify-between gap-4 transition-all duration-300 hover:border-slate-700/80">
           <div class="flex justify-between items-center text-[9px] text-slate-500 font-bold uppercase tracking-wider border-b border-slate-800/40 pb-2">
-            <span>Match #${m.id} • ${m.type === 'group' ? `Grupo ${m.group}` : (stageTranslations[m.type] || m.group)}</span>
+            <span>Match #${sanitize(m.id)} • ${sanitize(m.type === 'group' ? `Grupo ${m.group}` : (stageTranslations[m.type] || m.group))}</span>
             ${badgeHTML}
           </div>
           
           <div class="flex justify-between items-center py-1.5 gap-3">
             <div class="flex items-center gap-2.5 w-[42%] justify-start">
               <img src="${m.home_team_id === "0" ? 'https://flagcdn.com/w80/un.png' : `https://flagcdn.com/w80/${homeTeamCode}.png`}" alt="" class="w-8 h-5.5 object-cover rounded shadow border border-slate-800" />
-              <span class="text-sm font-bold text-slate-200 truncate">${homeName}</span>
+              <span class="text-sm font-bold text-slate-200 truncate">${sanitize(homeName)}</span>
             </div>
             
             <div class="flex items-center justify-center gap-1.5 px-3 py-1 rounded-lg bg-slate-950/60 border border-slate-800/80 font-display font-black text-sm text-white min-w-[56px]">
-              <span>${m.home_score}</span>
+              <span>${sanitize(m.home_score)}</span>
               <span class="text-slate-600 font-medium text-xs">:</span>
-              <span>${m.away_score}</span>
+              <span>${sanitize(m.away_score)}</span>
             </div>
             
             <div class="flex items-center gap-2.5 w-[42%] justify-end text-right">
-              <span class="text-sm font-bold text-slate-200 truncate">${awayName}</span>
+              <span class="text-sm font-bold text-slate-200 truncate">${sanitize(awayName)}</span>
               <img src="${m.away_team_id === "0" ? 'https://flagcdn.com/w80/un.png' : `https://flagcdn.com/w80/${awayTeamCode}.png`}" alt="" class="w-8 h-5.5 object-cover rounded shadow border border-slate-800" />
             </div>
           </div>
           
           <div class="flex justify-between items-center text-[9px] text-slate-400 pt-2 border-t border-slate-800/40">
-            <span class="truncate max-w-[50%]">🏟️ ${sInfo.name}</span>
-            <span class="text-amber-400 font-bold tracking-wide text-right">${formatted.day} • ${formatted.time} hs</span>
+            <span class="truncate max-w-[50%]">🏟️ ${sanitize(sInfo.name)}</span>
+            <span class="text-amber-400 font-bold tracking-wide text-right">${sanitize(formatted.day)} • ${sanitize(formatted.time)} hs</span>
           </div>
         </div>
       `;
@@ -734,14 +746,14 @@ const stadiumTimezones: Record<string, any> = {
           <td class="py-2.5 font-bold text-center text-slate-500 w-6">${idx + 1}</td>
           <td class="py-2.5 flex items-center gap-2 font-semibold text-slate-100">
             <img src="https://flagcdn.com/w80/${t.iso2.toLowerCase()}.png" class="w-5 h-3.5 object-cover rounded shadow border border-slate-950" alt="" />
-            <span class="truncate max-w-[100px]">${t.name}</span>
+            <span class="truncate max-w-[100px]">${sanitize(t.name)}</span>
           </td>
-          <td class="py-2.5 text-center font-medium">${t.pj}</td>
-          <td class="py-2.5 text-center font-medium">${t.w}</td>
-          <td class="py-2.5 text-center font-medium">${t.d}</td>
-          <td class="py-2.5 text-center font-medium">${t.l}</td>
-          <td class="py-2.5 text-center font-bold ${t.gd > 0 ? 'text-emerald-400' : (t.gd < 0 ? 'text-red-400' : '')}">${t.gd > 0 ? '+' + t.gd : t.gd}</td>
-          <td class="py-2.5 text-center font-black text-amber-400">${t.pts}</td>
+          <td class="py-2.5 text-center font-medium">${sanitize(t.pj)}</td>
+          <td class="py-2.5 text-center font-medium">${sanitize(t.w)}</td>
+          <td class="py-2.5 text-center font-medium">${sanitize(t.d)}</td>
+          <td class="py-2.5 text-center font-medium">${sanitize(t.l)}</td>
+          <td class="py-2.5 text-center font-bold ${t.gd > 0 ? 'text-emerald-400' : (t.gd < 0 ? 'text-red-400' : '')}">${t.gd > 0 ? '+' + sanitize(t.gd) : sanitize(t.gd)}</td>
+          <td class="py-2.5 text-center font-black text-amber-400">${sanitize(t.pts)}</td>
         </tr>
       `).join('');
       
@@ -749,7 +761,7 @@ const stadiumTimezones: Record<string, any> = {
         <div class="bg-slate-900/40 backdrop-blur-sm border border-slate-800/80 rounded-2xl p-5 flex flex-col gap-3 shadow-lg">
           <div class="flex justify-between items-center border-b border-slate-800 pb-2">
             <h3 class="text-sm font-black text-white font-display uppercase tracking-tight">
-              GRUPO <span class="text-amber-400">${groupLetter}</span>
+              GRUPO <span class="text-amber-400">${sanitize(groupLetter)}</span>
             </h3>
             <span class="text-[9px] font-bold text-slate-500 uppercase tracking-wider bg-slate-950 border border-slate-800/80 px-2 py-0.5 rounded-full">Fase de Grupos</span>
           </div>
@@ -793,23 +805,23 @@ const stadiumTimezones: Record<string, any> = {
           <div class="flex justify-between items-center border-b border-slate-850 pb-2 text-[9px] text-slate-500 font-bold uppercase tracking-wider">
             <span class="flex items-center gap-1.5">
               <img src="https://flagcdn.com/w80/${countryFlagCode}.png" class="w-4.5 h-3 object-cover rounded-sm border border-slate-950" alt="" />
-              ${sInfo.country}
+              ${sanitize(sInfo.country)}
             </span>
-            <span>👥 ${s.capacity.toLocaleString('es-ES')}</span>
+            <span>👥 ${sanitize(s.capacity.toLocaleString('es-ES'))}</span>
           </div>
           
           <div class="flex flex-col gap-0.5">
-            <h4 class="text-sm font-bold text-slate-100 truncate tracking-tight" title="${s.name_en}">
-              ${s.name_en}
+            <h4 class="text-sm font-bold text-slate-100 truncate tracking-tight" title="${sanitize(s.name_en)}">
+              ${sanitize(s.name_en)}
             </h4>
             <p class="text-xs text-slate-400 font-medium">
-              📍 ${sInfo.city}
+              📍 ${sanitize(sInfo.city)}
             </p>
           </div>
           
           <div class="text-[9px] uppercase font-bold text-slate-400 bg-slate-950 border border-slate-855 px-2 py-1.5 rounded flex justify-between tracking-wide">
-            <span>Región: ${s.region}</span>
-            <span>UTC ${sInfo.offset >= 0 ? '+' + sInfo.offset : sInfo.offset}</span>
+            <span>Región: ${sanitize(s.region)}</span>
+            <span>UTC ${sInfo.offset >= 0 ? '+' + sanitize(sInfo.offset) : sanitize(sInfo.offset)}</span>
           </div>
         </div>
       `;
@@ -838,7 +850,7 @@ const stadiumTimezones: Record<string, any> = {
         matches = data.games;
         
         if (apiStatusDot) {
-          apiStatusDot.className = "w-2 h-2 rounded-full bg-emerald-500";
+          apiStatusDot.className = "w-2.5 h-2.5 rounded-full bg-emerald-500";
         }
         if (apiStatusText) {
           apiStatusText.textContent = "Conectado (En Vivo)";
@@ -853,7 +865,7 @@ const stadiumTimezones: Record<string, any> = {
       console.warn("Error fetching live data, falling back to local database:", err);
       
       if (apiStatusDot) {
-        apiStatusDot.className = "w-2 h-2 rounded-full bg-blue-500";
+        apiStatusDot.className = "w-2.5 h-2.5 rounded-full bg-blue-500";
       }
       if (apiStatusText) {
         apiStatusText.textContent = "Modo Respaldo (Local)";
