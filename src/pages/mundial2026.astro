@@ -133,6 +133,8 @@ const stadiumTimezones: Record<string, any> = {
 
     <!-- HERO: Próximo partido o Partido en Vivo -->
     <section id="hero-match" class="bg-slate-950/40 backdrop-blur-md border border-slate-800 rounded-3xl p-6 md:p-8 shadow-2xl relative overflow-hidden transition-all duration-300">
+      <h2 class="sr-only">Partido Destacado</h2>
+      
       <!-- Fondo decorativo -->
       <div class="absolute inset-0 bg-gradient-to-r from-emerald-950/10 to-amber-950/5 pointer-events-none"></div>
       
@@ -147,7 +149,7 @@ const stadiumTimezones: Record<string, any> = {
         <!-- Home Team -->
         <div class="flex flex-col items-center gap-3 w-full md:w-1/3 text-center">
           <img id="hero-home-flag" src="https://flagcdn.com/w80/un.png" alt="" class="w-24 h-16 object-cover rounded-xl shadow-lg border border-slate-800 transition-transform duration-300 hover:scale-105" />
-          <h3 id="hero-home-name" class="text-xl md:text-2xl font-black text-white font-display">--</h3>
+          <div id="hero-home-name" class="text-xl md:text-2xl font-black text-white font-display">--</div>
         </div>
 
         <!-- Marcador central -->
@@ -166,7 +168,7 @@ const stadiumTimezones: Record<string, any> = {
         <!-- Away Team -->
         <div class="flex flex-col items-center gap-3 w-full md:w-1/3 text-center">
           <img id="hero-away-flag" src="https://flagcdn.com/w80/un.png" alt="" class="w-24 h-16 object-cover rounded-xl shadow-lg border border-slate-800 transition-transform duration-300 hover:scale-105" />
-          <h3 id="hero-away-name" class="text-xl md:text-2xl font-black text-white font-display">--</h3>
+          <div id="hero-away-name" class="text-xl md:text-2xl font-black text-white font-display">--</div>
         </div>
       </div>
 
@@ -225,20 +227,20 @@ const stadiumTimezones: Record<string, any> = {
       
       <!-- Filtros -->
       <div class="bg-slate-950/20 backdrop-blur-md border border-slate-800/80 rounded-2xl p-5 flex flex-col gap-4">
-        <h3 class="text-xs font-extrabold uppercase tracking-widest text-slate-400">
+        <div class="text-xs font-extrabold uppercase tracking-widest text-slate-400">
           🔍 Filtrar y Buscar Partidos
-        </h3>
+        </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           <!-- Búsqueda -->
           <div class="flex flex-col gap-1.5">
-            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wide">Buscar selección</label>
+            <label for="filter-search" class="text-[10px] font-bold text-slate-400 uppercase tracking-wide">Buscar selección</label>
             <input id="filter-search" type="text" placeholder="Ej: Argentina, México, Brasil..." class="bg-slate-900/60 border border-slate-800 text-white px-4 py-2.5 rounded-xl text-sm focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/20 transition-all duration-300" />
           </div>
 
           <!-- Fase del torneo -->
           <div class="flex flex-col gap-1.5">
-            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wide">Fase del Torneo</label>
+            <label for="filter-stage" class="text-[10px] font-bold text-slate-400 uppercase tracking-wide">Fase del Torneo</label>
             <select id="filter-stage" class="bg-slate-900/60 border border-slate-800 text-white px-4 py-2.5 rounded-xl text-sm focus:outline-none focus:border-emerald-500 transition-all duration-300">
               <option value="all">Todas las Fases</option>
               <option value="group">Fase de Grupos</option>
@@ -253,7 +255,7 @@ const stadiumTimezones: Record<string, any> = {
 
           <!-- Grupos (si es Fase de Grupos) -->
           <div class="flex flex-col gap-1.5">
-            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wide">Grupo</label>
+            <label for="filter-group" class="text-[10px] font-bold text-slate-400 uppercase tracking-wide">Grupo</label>
             <select id="filter-group" class="bg-slate-900/60 border border-slate-800 text-white px-4 py-2.5 rounded-xl text-sm focus:outline-none focus:border-emerald-500 transition-all duration-300">
               <option value="all">Todos los Grupos</option>
               <option value="A">Grupo A</option>
@@ -301,7 +303,7 @@ const stadiumTimezones: Record<string, any> = {
         <!-- Empty state -->
         <div id="matches-empty" class="hidden bg-slate-950/20 border border-slate-800 rounded-2xl p-12 text-center flex flex-col items-center gap-3">
           <span class="text-3xl">🔍</span>
-          <h4 class="font-bold text-slate-200">No se encontraron partidos</h4>
+          <div class="font-bold text-slate-200">No se encontraron partidos</div>
           <p class="text-xs text-slate-400">Intenta reajustar los filtros.</p>
         </div>
       </div>
@@ -309,6 +311,7 @@ const stadiumTimezones: Record<string, any> = {
 
     <!-- PESTAÑA 2: GRUPOS -->
     <div id="tab-content-groups" class="tab-content hidden">
+      <h2 class="sr-only">Grupos y Posiciones</h2>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="groups-grid">
         <!-- Dinámico -->
       </div>
@@ -316,6 +319,7 @@ const stadiumTimezones: Record<string, any> = {
 
     <!-- PESTAÑA 3: ESTADIOS -->
     <div id="tab-content-stadiums" class="tab-content hidden">
+      <h2 class="sr-only">Estadios e Información</h2>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="stadiums-grid">
         <!-- Dinámico -->
       </div>
@@ -811,9 +815,9 @@ const stadiumTimezones: Record<string, any> = {
           </div>
           
           <div class="flex flex-col gap-0.5">
-            <h4 class="text-sm font-bold text-slate-100 truncate tracking-tight" title="${sanitize(s.name_en)}">
+            <h3 class="text-sm font-bold text-slate-100 truncate tracking-tight" title="${sanitize(s.name_en)}">
               ${sanitize(s.name_en)}
-            </h4>
+            </h3>
             <p class="text-xs text-slate-400 font-medium">
               📍 ${sanitize(sInfo.city)}
             </p>
