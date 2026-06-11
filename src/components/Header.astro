@@ -136,11 +136,12 @@ const mundialHref = "/mundial2026";
 </nav>
 
 <script>
-  document
-    .getElementById("menu-toggle")
-    ?.addEventListener("click", function () {
-      var menu = document.getElementById("menu-list");
-      menu?.classList.toggle("hidden");
-    });
+  document.addEventListener("astro:page-load", () => {
+    document
+      .getElementById("menu-toggle")
+      ?.addEventListener("click", function () {
+        var menu = document.getElementById("menu-list");
+        menu?.classList.toggle("hidden");
+      });
+  });
 </script>
-
